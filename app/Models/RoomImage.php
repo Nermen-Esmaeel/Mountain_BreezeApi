@@ -8,15 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RoomImage extends Model
 {
-    use HasFactory;
-/**
- * Get the user that owns the RoomImage
- *
- * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
- */
-public function rooms(): BelongsTo
-{
-    return $this->belongsTo(Room::class);
-}
+
+        use HasFactory;
+
+        protected $fillable = [
+            'image',
+            'room_id',
+        ];
+
+
+    public function rooms(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
 
 }

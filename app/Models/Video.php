@@ -10,6 +10,14 @@ class Video extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+
+
     public function article(): BelongsTo
 {
     return $this->belongsTo(Article::class, 'article_id', 'id');

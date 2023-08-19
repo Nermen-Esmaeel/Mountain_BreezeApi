@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+//Article Route
+Route::group([
+    'prefix' => '/articles',
+], function () {
+    Route::get('/', [ArticleController::class, 'index']);
+    Route::get('/{id}', [ArticleController::class, 'show']);
+    Route::post('/', [ArticleController::class, 'store']);
+    Route::put('/{id}', [ArticleController::class, 'update']);
+    Route::delete('/{id}', [ArticleController::class, 'destroy']);
+
+});
+
+/**************     Post Tag Routes    *************/
+Route::group([
+    'prefix' => '/article.tags',
+], function () {
+
+          Route::post('/{id}' , [ArticleController::class , 'deleteTagFormArticle']);
+          Route::get('/{id}' , [ArticleController::class , 'showArticleTag']);
 });
