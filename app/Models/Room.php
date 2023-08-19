@@ -10,12 +10,14 @@ class Room extends Model
 {
     use HasFactory;
 
+      protected $fillable=[
+        'name' ,
+        'type' ,
+        'guests_number',
+        'price',
+        'content'
+    ];
 
-    /**
-     * Get all of the comments for the Room
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function images(): HasMany
     {
         return $this->hasMany(RoomImage::class, 'room_id', 'id');
