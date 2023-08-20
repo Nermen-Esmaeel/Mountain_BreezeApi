@@ -13,26 +13,30 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable=['article_cover' , 'category' , 'title' , 'content' , 'date'];
+    protected $fillable = ['article_cover', 'category', 'title', 'content', 'date'];
 
 
 
 
-  //many to many between article and tag
+    //many to many between article and tag
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'articles_tags', 'article_id', 'tag_id')->as('articles_tags');
     }
 
- //one to many between article and images
-    public function images() {
-        return $this->hasMany(Image::class , 'article_id' , 'id' );
+    //one to many between article and images
+    // public function images() {
+    //     return $this->hasMany(Image::class , 'article_id' , 'id' );
+    // }
+
+    //one to many between article and video
+    public function videos()
+    {
+        return $this->hasMany(Image::class, 'article_id', 'id');
     }
 
-     //one to many between article and video
-     public function videos() {
-        return $this->hasMany(Image::class , 'article_id' , 'id' );
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
-
-
 }

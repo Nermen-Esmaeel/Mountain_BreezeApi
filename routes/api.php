@@ -28,7 +28,6 @@ Route::group([
     Route::post('/', [ArticleController::class, 'store']);
     Route::put('/{id}', [ArticleController::class, 'update']);
     Route::delete('/{id}', [ArticleController::class, 'destroy']);
-
 });
 
 /**************     Post Tag Routes    *************/
@@ -36,14 +35,12 @@ Route::group([
     'prefix' => '/article.tags',
 ], function () {
 
-          Route::post('/{id}' , [ArticleController::class , 'deleteTagFormArticle']);
-          Route::get('/{id}' , [ArticleController::class , 'showArticleTag']);
+    Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
+    Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
 });
 
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
-    Route::post('register', 'register');
     Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
 });
