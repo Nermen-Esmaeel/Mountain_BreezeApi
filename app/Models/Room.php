@@ -10,16 +10,16 @@ class Room extends Model
 {
     use HasFactory;
 
-      protected $fillable=[
-        'name' ,
-        'type' ,
+    protected $fillable = [
+        'name',
+        'type',
         'guests_number',
         'price',
         'content'
     ];
 
-    public function images(): HasMany
+    public function images()
     {
-        return $this->hasMany(RoomImage::class, 'room_id', 'id');
+        return $this->morphMany(Image::class, 'imageable');
     }
 }

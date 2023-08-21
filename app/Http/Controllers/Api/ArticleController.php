@@ -58,7 +58,7 @@ class ArticleController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('food_images', $filename);
+                $image->storeAs('Article', $filename);
 
                 $article->images()->create([
                     'image_path' => $filename,

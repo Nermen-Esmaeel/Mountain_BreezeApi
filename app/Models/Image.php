@@ -21,4 +21,8 @@ class Image extends Model
     {
         return $this->belongsTo(Article::class, 'article_id', 'id');
     }
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ArticleController;
@@ -19,28 +20,23 @@ use App\Http\Controllers\Api\Auth\AuthController;
 
 
 
-//Article Route
-Route::group([
-    'prefix' => '/articles',
-], function () {
-    Route::get('/', [ArticleController::class, 'index']);
-    Route::get('/{id}', [ArticleController::class, 'show']);
-    Route::post('/', [ArticleController::class, 'store']);
-    Route::put('/{id}', [ArticleController::class, 'update']);
-    Route::delete('/{id}', [ArticleController::class, 'destroy']);
-});
+Route::prefix('dashboard')->group(function () {
 
-/**************     Post Tag Routes    *************/
-Route::group([
-    'prefix' => '/article.tags',
-], function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('login', 'login');
+        Route::post('logout', 'logout');
+    });
 
-    Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
-    Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
-});
+    //Article Route
+    Route::resource('articles', ArticleController::class);
 
+    /**************     Post Tag Routes    *************/
+    Route::prefix('/article.tags')->group(function () {
 
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('logout', 'logout');
+        Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
+        Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
+    });
+
+    //Rooms
+    Route::resource('rooms', RoomController::class);
 });
