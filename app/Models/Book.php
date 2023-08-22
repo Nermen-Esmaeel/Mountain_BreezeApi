@@ -9,5 +9,18 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable=['full_name' , 'phone' , 'email' , 'check_in_date' , 'check_out_date' , 'room_type' , 'guests_number' , 'content'];
+    protected $fillable=[
+       
+        'full_name_en',
+        'full_name_ar',
+        'phone' ,
+        'email' ,
+        'check_in_date' ,
+        'check_out_date' ,
+        'room_type_en' ,
+        'room_type_ar' ,
+        'guests_number' ,
+        'content_en',
+        'content_ar',
+    ];
 }
