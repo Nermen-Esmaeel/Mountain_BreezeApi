@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('food', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->string('category');
-            $table->string('title');
-            $table->longText('content');
-            $table->enum('image_size', ['x1', 'x3']);
+            $table->string('image')->nullable();
+            $table->string('category_en');
+            $table->string('category_ar');
+            $table->string('title_en');
+            $table->string('title_ar');
+            $table->longText('content_en');
+            $table->longText('content_ar');
+            $table->enum('image_size', ['x1', 'x3'])->nullable();
             $table->timestamps();
         });
     }

@@ -13,7 +13,16 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable=['article_cover' , 'category' , 'title' , 'content' , 'date'];
+    protected $fillable=[
+    'article_cover',
+    'category_en',
+    'category_ar',
+    'title_en',
+    'title_ar',
+    'content_en',
+    'content_ar',
+    'date'
+    ];
 
 
 
