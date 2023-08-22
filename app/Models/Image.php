@@ -10,14 +10,19 @@ class Image extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'category',
-        'image',
-        'article_id'
+        'image_path',
     ];
+    public function imageable()
+    {
+        return $this->morphTo();
+    }
 
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class, 'article_id', 'id');
     }
-
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
 }

@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ArticleController;
-use App\Http\Controllers\Api\FoodController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,29 +25,16 @@ Route::group([
     Route::get('/', [ArticleController::class, 'index']);
     Route::get('/{id}', [ArticleController::class, 'show']);
     Route::post('/', [ArticleController::class, 'store']);
-    Route::post('/{id}', [ArticleController::class, 'update']);
+    Route::put('/{id}', [ArticleController::class, 'update']);
     Route::delete('/{id}', [ArticleController::class, 'destroy']);
 
 });
 
-// Post Tag Routes
+/**************     Post Tag Routes    *************/
 Route::group([
     'prefix' => '/article.tags',
 ], function () {
 
           Route::post('/{id}' , [ArticleController::class , 'deleteTagFormArticle']);
           Route::get('/{id}' , [ArticleController::class , 'showArticleTag']);
-});
-
-
-//Food Routes
-Route::group([
-    'prefix' => '/foods',
-], function () {
-
-    Route::get('/', [FoodController::class, 'index']);
-    Route::get('/{id}', [FoodController::class, 'show']);
-    Route::post('/', [FoodController::class, 'store']);
-    Route::Post('/{id}', [FoodController::class, 'update']);
-    Route::delete('/{id}', [FoodController::class, 'destroy']);
 });
