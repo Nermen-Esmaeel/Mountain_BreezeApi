@@ -14,6 +14,7 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable=[
+    
     'article_cover',
     'category_en',
     'category_ar',

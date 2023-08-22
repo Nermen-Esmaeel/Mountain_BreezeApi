@@ -28,19 +28,28 @@ class StoreArticle extends FormRequest
     {
         return [
 
-            'category' => 'required|string|max:255',
-            'title' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/',
-            'content' => 'required|string|regex:/^[a-zA-Z& ]+$/|between:30,600',
+            'article_cover' => 'required|image|file',
+            'category_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
+            'category_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
+            'title_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
+            'title_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
+            'content_en' => 'required|string|regex:/^[a-zA-Z& ]+$/|max:1500',
+            'content_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
             'date'     => 'required|date'
         ];
     }
 
     public function messages(){
         return [
-            'category'    => 'The category field is required! ',
-            'title.regex' => 'The title must include only english letters.',
-            'content.regex' => 'The description must include only english letters.',
-             'date.required' => 'Date field is required!' ,
+            
+            'article_cover'       => 'Article cover image field is required!',
+            'category_en.regex'    => 'The category_en must include only english letters. ',
+            'category_ar.regex'    => 'The category_ar must include only arabic letters.',
+            'title_en.regex' => 'The title_en must include only english letters.',
+            'title_ar.regex' => 'The title_ar must include only arabic letters.',
+            'content_en.regex' => 'The content_en must include only english letters.',
+            'content_ar.regex' => 'The content_ar must include only arabic letters.',
+            'date.required' => 'Date field is required!' ,
 
         ];
     }

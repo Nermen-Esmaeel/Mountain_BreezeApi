@@ -25,7 +25,7 @@ Route::group([
     Route::get('/', [ArticleController::class, 'index']);
     Route::get('/{id}', [ArticleController::class, 'show']);
     Route::post('/', [ArticleController::class, 'store']);
-    Route::put('/{id}', [ArticleController::class, 'update']);
+    Route::post('/{id}', [ArticleController::class, 'update']);
     Route::delete('/{id}', [ArticleController::class, 'destroy']);
 
 });

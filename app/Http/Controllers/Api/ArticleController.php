@@ -17,33 +17,54 @@ class ArticleController extends Controller
     //Show All Article
     public function index()
     {
-        $articles = ArticleResource::collection(Article::get());
+        $articles  = ArticleResource::collection(Article::query()
+        ->Select('article_cover')
+        ->addSelect('category_' . request()->header('language') .' as category')
+        ->addSelect('title_' . request()->header('language') . ' as title')
+        ->addSelect('content_' . request()->header('language') .' as content')
+        ->addSelect('date')
+        ->addSelect('created_at')
+        ->addSelect('updated_at')
+        ->get());
         return $this->apiResponse($articles,'' ,200);
     }
 
     //show one article
     public function show($id)
     {
-        //fetch  post from database and store in $posts
-
         $article = Article::find($id);
+      
+        //fetch  post from database and store in $posts
         if($article) {
-            return $this->apiResponse(new ArticleResource($article), 'ok', 200);
+
+            $article = ArticleResource::collection(Article::query()
+            ->where('id', '=', $id)
+            ->Select('article_cover')
+            ->addSelect('category_' . request()->header('language') .' as category')
+            ->addSelect('title_' . request()->header('language') . ' as title')
+            ->addSelect('content_' . request()->header('language') . ' as content')
+            ->addSelect('date')
+            ->addSelect('created_at')
+            ->addSelect('updated_at')
+            ->get());
+
+            return $this->apiResponse($article, 'ok', 200);
         }
-        return $this->apiResponse(null, 'the post not found', 404);
+        return $this->apiResponse(null, 'the article not found', 404);
     }
 
       //store an article
       public function store(StoreArticle $request)
       {
-
         $input = $request->input();
-
         $article = Article::create([
-            'article_cover' => $input['article_cover'],
-            'category' =>  $input['category'],
-            'title' =>  $input['title'],
-            'content' =>  $input['content'],
+            'article_cover' => $request->article_cover->getClientOriginalName() ,
+            'category_en' =>  $input['category_en'],
+            'category_ar' =>  $input['category_ar'],
+            'title_en' => $input['title_en'],
+            'title_ar' =>  $input['title_ar'],
+            'content_en' =>  $input['content_en'],
+            'content_ar' =>  $input['content_ar'],
             'date' =>  $input['date'],
         ]);
 
@@ -76,8 +97,9 @@ class ArticleController extends Controller
 
         }
 
-        $article = Article::find($article->id)->with(['images'])->first();
-      return $this->apiResponse(new ArticleResource($article), 'Article created successfully', 201);
+        $article = Article::find($article->id)->with(['images'])->latest()->first();
+
+      return $this->apiResponse($article, 'Article created successfully', 201);
 
       }
 
@@ -85,15 +107,21 @@ class ArticleController extends Controller
     public function update(UpdateArticle $request, $id)
     {
         $input = $request->input();
-        $article = Article::find($id);
+        $article = Article::find($id)->with(['images'])->latest()->first();
 
         if($article) {
-            $article->update($input);
 
-            return $this->apiResponse(new ArticleResource($article), 'the article updated successfully ', 201);
+            $article->update($input);
+            if ($request->article_cover) {
+                $article->update([
+                    'article_cover' => $request->article_cover->getClientOriginalName(),
+                ]);
+            }
+            return $this->apiResponse($article, 'the article updated successfully ', 201);
         }
         return $this->apiResponse(null, 'the article not found', 404);
     }
+
     //delete an article
     public function destroy($id)
     {
