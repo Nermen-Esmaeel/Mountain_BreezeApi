@@ -20,12 +20,13 @@ use App\Http\Controllers\Api\Auth\AuthController;
 
 
 
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('logout', 'logout');
+});
+
 Route::prefix('dashboard')->group(function () {
 
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('login', 'login');
-        Route::post('logout', 'logout');
-    });
 
     //Article Route
     Route::resource('articles', ArticleController::class);
