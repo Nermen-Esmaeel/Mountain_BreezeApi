@@ -17,13 +17,15 @@ class FoodResource extends JsonResource
         return [
 
             'id' => $this->id,
-            'image' => $this->image,
-            'category' => $this->category,
-            'title' => $this->title,
-            'content' => $this->content,
+            'image' => asset($this->image),
+            'category_en' => $this->category_en,
+            'category_ar' => $this->category_ar,
+            'title_en' => $this->title_en,
+            'title_ar' => $this->title_ar,
+            'content_en' => $this->content_en,
+            'content_ar' => $this->content_ar,
             'image_size' => $this->image_size,
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
+
 
         ];
     }

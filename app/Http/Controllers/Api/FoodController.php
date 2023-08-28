@@ -8,43 +8,31 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiResponseTrait;
 use App\Http\Resources\FoodResource;
 use App\Http\Requests\{StoreFood ,UpdateFood };
+use App\Traits\UploadFile;
+use Illuminate\Support\Facades\File;
 
 
 class FoodController extends Controller
 {
-    use ApiResponseTrait ;
+    use ApiResponseTrait , UploadFile;
 
 
      //Show All foods
      public function index()
      {
-        $foods  = FoodResource::collection(Food::query()
-        ->Select('image')
-        ->addSelect('category_' . request()->header('language') .' as category')
-        ->addSelect('title_' . request()->header('language') . ' as title')
-        ->addSelect('content_' . request()->header('language') .' as content')
-        ->addSelect('image_size')
-        ->addSelect('created_at')
-        ->addSelect('updated_at')
-        ->get());
+        $foods  = FoodResource::collection(Food::query()->get());
 
-      
+
          return $this->apiResponse($foods ,'' ,200);
      }
 
     //show one food
     public function show($id)
     {
-        $food = Food::query()
-        ->where('id', '=', $id)
-        ->Select('image')
-        ->addSelect('category_' . request()->header('language') .' as category')
-        ->addSelect('title_' . request()->header('language') . ' as title')
-        ->addSelect('content_' . request()->header('language') . ' as content')
-        ->addSelect('image_size')->get();
-       
+        $food = Food::query()->where('id', '=', $id)->first();
+
         if($food) {
-            return $this->apiResponse($food, 'ok', 200);
+            return $this->apiResponse( new FoodResource($food), 'ok', 200);
         }
         return $this->apiResponse(null, 'the food not found', 404);
     }
@@ -54,9 +42,14 @@ class FoodController extends Controller
     //store an food
     public function store(StoreFood $request)
     {
-        
+
             $input = $request->input();
+
+            if ($request->hasFile('image')) {
+                $path = $this->UploadFile('Foods' , $request->file('image'));
+            }
             $food = Food::create([
+
                 'category_en' =>  $input['category_en'],
                 'category_ar' =>  $input['category_ar'],
                 'title_en' => $input['title_en'],
@@ -66,9 +59,9 @@ class FoodController extends Controller
             ]);
 
             if ($request->image) {
-              
+
                 $food->update([
-                    'image' => $request->image->getClientOriginalName(),
+                    'image' => $path ,
                     'image_size' =>  $input['image_size'],
                 ]);
             }
@@ -90,24 +83,30 @@ class FoodController extends Controller
 
        if($food) {
            $food->update($input);
-           if ($request->image) {
-            $food->update([
-                'image' => $request->image->getClientOriginalName(),
-                'image_size' =>  $input['image_size'],
-            ]);
+
+             if ($request->hasFile('image')) {
+
+                    $path = $this->UploadFile('Foods' , $request->file('image'));
+                    File::delete(public_path().'/'.$food->image);
+                    $food->update([
+                        'image' => $path ,
+                        'image_size' =>  $input['image_size'],
+                    ]);
+
+            }
+            return $this->apiResponse($food, 'the food updated successfully ', 201);
         }
 
-           return $this->apiResponse($food, 'the food updated successfully ', 201);
-       }
        return $this->apiResponse(null, 'the food not found', 404);
    }
 
     //delete an article
     public function destroy($id)
     {
-        $food = Food::find($id);
+        $food = Food::findOrFail($id);
         if($food) {
 
+            File::delete(public_path().'/'.$food->image);
             $food->delete($id);
             return $this->apiResponse(null, 'the food deleted successfully', 200);
         }

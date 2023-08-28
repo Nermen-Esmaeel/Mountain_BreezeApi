@@ -80,9 +80,3 @@ Route::prefix('dashboard')->group(function () {
 //end perfix dashboard
 });
 
-Route::group([
-    'prefix' => '/books',
-], function () {
-    Route::get('/', [BookController::class, 'index']);
-
-});

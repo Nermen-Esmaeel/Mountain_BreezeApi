@@ -5,27 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Models\{Article, Image, Tag};
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\ApiResponseTrait;
 use App\Http\Resources\ArticleResource;
 use App\Http\Requests\{StoreArticle, UpdateArticle};
+use App\Traits\{UploadFile , ApiResponseTrait};
+use Illuminate\Support\Facades\File;
 
 
 class ArticleController extends Controller
 {
-    use ApiResponseTrait;
+    use ApiResponseTrait , UploadFile;
 
     //Show All Article
     public function index()
     {
-        $articles  = ArticleResource::collection(Article::query()
-        ->Select('article_cover')
-        ->addSelect('category_' . request()->header('language') .' as category')
-        ->addSelect('title_' . request()->header('language') . ' as title')
-        ->addSelect('content_' . request()->header('language') .' as content')
-        ->addSelect('date')
-        ->addSelect('created_at')
-        ->addSelect('updated_at')
-        ->get());
+        $articles  = ArticleResource::collection(Article::query()->get());
         return $this->apiResponse($articles,'' ,200);
     }
 
@@ -33,22 +26,13 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::find($id);
-      
+
         //fetch  post from database and store in $posts
         if($article) {
 
-            $article = ArticleResource::collection(Article::query()
-            ->where('id', '=', $id)
-            ->Select('article_cover')
-            ->addSelect('category_' . request()->header('language') .' as category')
-            ->addSelect('title_' . request()->header('language') . ' as title')
-            ->addSelect('content_' . request()->header('language') . ' as content')
-            ->addSelect('date')
-            ->addSelect('created_at')
-            ->addSelect('updated_at')
-            ->get());
+            $article = Article::query()->where('id', '=', $id)->first();
 
-            return $this->apiResponse($article, 'ok', 200);
+            return $this->apiResponse(new ArticleResource($article) , 'ok', 200);
         }
         return $this->apiResponse(null, 'the article not found', 404);
     }
@@ -60,13 +44,12 @@ class ArticleController extends Controller
         $input = $request->input();
 
         if ($request->hasFile('article_cover')) {
-            $image = $request->file('article_cover');
-            $imageName = time() . '.' .   $image->getClientOriginalExtension();
-            $path = $image->storeAs('images/articles', $imageName);
+
+            $path = $this->UploadFile('Article_Covers' , $request->file('article_cover'));
         }
-        
+
             $article = Article::create([
-                'article_cover' => $request->article_cover->getClientOriginalName() ,
+                'article_cover' =>  $path ,
                 'category_en' =>  $input['category_en'],
                 'category_ar' =>  $input['category_ar'],
                 'title_en' => $input['title_en'],
@@ -74,7 +57,7 @@ class ArticleController extends Controller
                 'content_en' =>  $input['content_en'],
                 'content_ar' =>  $input['content_ar'],
                 'date' =>  $input['date'],
-            
+
         ]);
 
 
@@ -106,7 +89,8 @@ class ArticleController extends Controller
 
         }
 
-        $article = Article::find($article->id)->with(['images'])->first();
+        $article = Article::find($article->id)->with(['images'])->orderBy('id','Desc')->first();
+
       return $this->apiResponse(new ArticleResource($article), 'Article created successfully', 201);
 
       }
@@ -115,15 +99,20 @@ class ArticleController extends Controller
     public function update(UpdateArticle $request, $id)
     {
         $input = $request->input();
-        $article = Article::find($id)->with(['images'])->latest()->first();
+        $article = Article::find($id)->with(['images'])->orderBy('id','Desc')->first();
         if($article) {
+
             $article->update($input);
             if ($request->article_cover) {
+
+                $path = $this->UploadFile('Article_Covers' , $request->file('article_cover'));
+                File::delete(public_path().'/'.$article->article_cover);
+
                 $article->update([
-                    'article_cover' => $request->article_cover->getClientOriginalName(),
+                    'article_cover' => $path,
                 ]);
             }
-            return $this->apiResponse($article, 'the article updated successfully ', 201);
+            return $this->apiResponse(new ArticleResource($article), 'the article updated successfully ', 201);
         }
         return $this->apiResponse(null, 'the article not found', 404);
     }
@@ -134,6 +123,7 @@ class ArticleController extends Controller
         $article = Article::find($id);
         if ($article) {
 
+            File::delete(public_path().'/'.$article->article_cover);
             $article->delete($id);
             $article->tags()->detach();
             return $this->apiResponse(null, 'the Article deleted successfully', 200);
