@@ -16,12 +16,9 @@ class ImageResource extends JsonResource
     {
 
         return [
-<<<<<<< HEAD
-                'id' => $this->id,
-                'name' => $this->image_path,
-=======
+
             'path' => $this->image_path,
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
+
         ];
     }
 }

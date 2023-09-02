@@ -1,18 +1,9 @@
 <?php
 
-<<<<<<< HEAD
-use App\Http\Controllers\Api\Admin\RoomController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ArticleController;
-use App\Http\Controllers\Api\FoodController;
-use App\Http\Controllers\Api\BookController;
-use App\Http\Controllers\Api\Auth\AuthController;
-
-=======
 use App\Http\Controllers\Api\Admin\ExploreController;
 use App\Http\Controllers\Api\Admin\GalaryController;
 use App\Http\Controllers\Api\Admin\RoomController;
+
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\ArticleController;
@@ -21,7 +12,6 @@ use App\Http\Controllers\Api\Admin\BookController;
 use App\Http\Controllers\Api\Auth\AuthController;
 
 
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,17 +23,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 |
 */
 
-<<<<<<< HEAD
-    //Auth Routes
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('login', 'login');
-        Route::post('register', 'register');
-        Route::post('logout', 'logout');
-    });
 
-//start perfix dashboard
-Route::prefix('dashboard')->group(function () {
-=======
 //Auth Routes
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -53,8 +33,6 @@ Route::controller(AuthController::class)->group(function () {
 
 //start perfix dashboard
 Route::prefix('dashboard')->middleware('auth:api')->group(function () {
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
-
 
     //Article Route
     Route::group([
@@ -65,10 +43,6 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::post('/', [ArticleController::class, 'store']);
         Route::post('/{id}', [ArticleController::class, 'update']);
         Route::delete('/{id}', [ArticleController::class, 'destroy']);
-<<<<<<< HEAD
-
-=======
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
     });
 
     //Post Tag Routes
@@ -76,13 +50,11 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         'prefix' => '/article.tags',
     ], function () {
 
-<<<<<<< HEAD
-            Route::post('/{id}' , [ArticleController::class , 'deleteTagFormArticle']);
-            Route::get('/{id}' , [ArticleController::class , 'showArticleTag']);
-=======
+        Route::post('/{id}' , [ArticleController::class , 'deleteTagFormArticle']);
+        Route::get('/{id}' , [ArticleController::class , 'showArticleTag']);
         Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
         Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
+
     });
 
     //Food Route
@@ -94,10 +66,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::post('/', [FoodController::class, 'store']);
         Route::post('/{id}', [FoodController::class, 'update']);
         Route::delete('/{id}', [FoodController::class, 'destroy']);
-<<<<<<< HEAD
 
-=======
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
     });
 
     //Food Route
@@ -105,25 +74,15 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         'prefix' => '/books',
     ], function () {
         Route::get('/', [BookController::class, 'index']);
-<<<<<<< HEAD
-
-=======
         Route::get('/room', [BookController::class, 'getAvailableRoom'])->middleware('chechBooking');
         Route::post('/', [BookController::class, 'store']);
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
     });
-
 
 
     //Rooms
     Route::resource('rooms', RoomController::class);
 
 
-<<<<<<< HEAD
-//end perfix dashboard
-});
-
-=======
     //Galary
     Route::post('galary', [GalaryController::class, 'storeImages']);
     Route::get('galary', [GalaryController::class, 'filteredImages']);
@@ -133,5 +92,6 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     //explore
     Route::get('explores/article', [ExploreController::class, 'filteredExplore']);
     Route::resource('explores', ExploreController::class);
+
 });
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
+

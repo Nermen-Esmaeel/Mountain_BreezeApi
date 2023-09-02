@@ -16,15 +16,6 @@ class RoomResource extends JsonResource
     {
         return [
             'id' => $this->id,
-<<<<<<< HEAD
-            'name' => $this->name,
-            'type' => $this->type,
-            'guests_number' => $this->guests_number,
-            'price' => $this->price,
-            'content' => $this->content,
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
-=======
             'name' => [
                 'en' => $this->name_en,
                 'ar' => $this->name_ar,
@@ -36,7 +27,6 @@ class RoomResource extends JsonResource
             'type' => $this->type,
             'guests_number' => $this->guests_number,
             'price' => $this->price,
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
             'room.images' =>  ImageResource::collection($this->images),
         ];
     }

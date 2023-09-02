@@ -12,6 +12,7 @@ class Image extends Model
     protected $fillable = [
         'image_path',
     ];
+
     public function imageable()
     {
         return $this->morphTo();
@@ -25,16 +26,11 @@ class Image extends Model
     {
         return $this->belongsTo(Room::class);
     }
-<<<<<<< HEAD
-=======
-    public function food(): BelongsTo
-    {
-        return $this->belongsTo(Book::class);
-    }
+
 
     public function galary(): BelongsTo
     {
         return $this->belongsTo(Galary::class);
     }
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
+
 }
