@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\ArticleController;
 use App\Http\Controllers\Api\Admin\FoodController;
 use App\Http\Controllers\Api\Admin\BookController;
+use App\Http\Controllers\Api\Admin\MessageController;
 use App\Http\Controllers\Api\Auth\AuthController;
 
 
@@ -93,5 +94,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::get('explores/article', [ExploreController::class, 'filteredExplore']);
     Route::resource('explores', ExploreController::class);
 
+    //contact as
+    Route::post('/contact' , [MessageController::class , 'sendMail']);
 });
 
