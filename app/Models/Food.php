@@ -21,4 +21,12 @@ class Food extends Model
         'content_ar',
         'image_size'
         ];
+<<<<<<< HEAD
+=======
+
+        public function images()
+        {
+            return $this->morphMany(Image::class, 'imageable');
+        }
+>>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
 }

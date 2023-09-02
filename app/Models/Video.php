@@ -11,9 +11,15 @@ class Video extends Model
     use HasFactory;
 
     protected $fillable = [
+<<<<<<< HEAD
         'category',
         'link',
         'article_id',
+=======
+        'type',
+        'link',
+        'name',
+>>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
     ];
 
 

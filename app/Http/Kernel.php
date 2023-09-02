@@ -66,5 +66,9 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+<<<<<<< HEAD
+=======
+        'chechBooking' => \App\Http\Middleware\CheckStatusBooking::class,
+>>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
     ];
 }
