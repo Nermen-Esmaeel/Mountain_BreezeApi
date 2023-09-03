@@ -75,7 +75,6 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         'prefix' => '/books',
     ], function () {
         Route::get('/', [BookController::class, 'index']);
-        Route::get('/room', [BookController::class, 'getAvailableRoom'])->middleware('chechBooking');
         Route::post('/', [BookController::class, 'store']);
     });
 
@@ -95,6 +94,8 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::resource('explores', ExploreController::class);
 
     //contact as
-    Route::post('/contact' , [MessageController::class , 'sendMail']);
+    Route::get('/contact' , [MessageController::class , 'index']);
+    Route::post('/contact' , [MessageController::class , 'store']);
+
 });
 

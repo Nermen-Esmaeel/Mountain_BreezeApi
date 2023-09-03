@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 
 class Book extends Model
@@ -12,7 +12,7 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable=[
-        'room_id',
+
         'full_name',
         'phone' ,
         'email' ,
@@ -23,9 +23,5 @@ class Book extends Model
         'content',
     ];
 
-    public function room(): BelongsTo
-{
-    return $this->belongsTo(Room::class, 'room_id', 'id');
-}
 
 }

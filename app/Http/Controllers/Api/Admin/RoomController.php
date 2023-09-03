@@ -3,44 +3,6 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-<<<<<<< HEAD
-use App\Http\Resources\RoomResource;
-use App\Models\Room;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Response;
-
-class RoomController extends Controller
-{
-    public function store(Request $request)
-    {
-
-        $rules = [
-            'name' => 'required|string',
-            'type' => 'required|string',
-            'guests_number' => 'required|integer',
-            'price' => 'required|numeric',
-            'content' => 'required|string',
-            'images.*' => 'required'
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-
-        if ($validator->fails()) {
-            return response()->json(
-                $validator->errors()->all(),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-
-        $room = Room::create([
-            'name' => $request->name,
-            'type' => $request->type,
-            'guests_number' => $request->guests_number,
-            'price' => $request->price,
-            'content' => $request->content
-=======
 use App\Http\Requests\Room\StoreRequest;
 use App\Http\Requests\Room\UpdateRequest;
 use App\Http\Resources\RoomResource;
@@ -74,31 +36,21 @@ class RoomController extends Controller
             'price' => $request->price,
             'content_en' => $request->content_en,
             'content_ar' => $request->content_ar
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
         ]);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = time() . '_' . $image->getClientOriginalName();
-<<<<<<< HEAD
-                $image->storeAs('Rooms', $filename);
-
-                $room->images()->create([
-                    'image_path' => $filename,
-=======
                 $path =  $image->storeAs('images/rooms', $filename);
 
                 $room->images()->create([
                     'image_path' => $path,
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
                 ]);
             }
         }
 
         return new RoomResource($room);
     }
-<<<<<<< HEAD
-=======
 
     public function show(Room $room)
     {
@@ -143,5 +95,4 @@ class RoomController extends Controller
             ], 404);
         }
     }
->>>>>>> 6f78e98 (feat(controller,middleware):Booking management)
 }

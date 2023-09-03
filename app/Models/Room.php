@@ -28,9 +28,6 @@ class Room extends Model
 
 
 
-    public function booking(): HasOne
-    {
-        return $this->hasOne(Book::class, 'room_id', 'id');
-    }
+
 
 }
