@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('galaries', function (Blueprint $table) {
             $table->id();
             $table->enum('type',['Restaurant','Chalet','Activity','Nature','Events']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

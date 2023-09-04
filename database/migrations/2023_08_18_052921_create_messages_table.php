@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('subject');
             $table->longText('content');
             $table->boolean('agree')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

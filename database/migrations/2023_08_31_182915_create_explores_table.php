@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('content_en')->nullable();
             $table->longText('content_ar')->nullable();
             $table->string('date')->nullable();
+              $table->softDeletes();
             $table->timestamps();
         });
     }

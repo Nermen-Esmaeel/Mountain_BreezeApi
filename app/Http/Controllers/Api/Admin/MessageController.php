@@ -47,4 +47,52 @@ class MessageController extends Controller
 }
 
 
+
+    //soft delete
+    public function SoftDelete($id)
+    {
+        $message = Message::find($id);
+        if ($message) {
+
+            $message->delete($id);
+            return $this->apiResponse(null, ' Message  Moved to Trash successfully', 200);
+        }
+
+        return $this->apiResponse(null, ' Message not found', 404);
+    }
+
+
+    //show trash
+    public function trash(){
+
+            $messages = Message::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+            if ($messages) {
+                return $this->apiResponse($messages, null , 200);
+            }
+            return $this->apiResponse(null, 'No Messages in Trash', 404);
+    }
+
+
+    //restore from trached
+    public function restore($id){
+
+
+            $food = Message::onlyTrashed()->where('id' , $id)->first()->restore();
+            return $this->apiResponse(null, 'Message restore successfully', 201);
+
+    }
+
+
+    //delete an food
+    public function forceDelete($id)
+    {
+        $mssages = Message::findOrFail($id);
+        if ($mssages) {
+            $mssages->forcedelete();
+            return $this->apiResponse(null, 'the mssages deleted successfully', 200);
+        }
+
+        return $this->apiResponse(null, 'the mssages not found', 404);
+    }
+
 }

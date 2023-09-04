@@ -18,7 +18,8 @@ class ArticleController extends Controller
     //Show All Article
     public function index()
     {
-        $articles  = ArticleResource::collection(Article::query()->get());
+
+        $articles  = ArticleResource::collection(Article::query()->with(['images'])->with(['tags'])->get());
         return $this->apiResponse($articles, '', 200);
     }
 
@@ -114,14 +115,51 @@ class ArticleController extends Controller
         return $this->apiResponse(null, 'the article not found', 404);
     }
 
-    //delete an article
-    public function destroy($id)
+
+
+    //soft delete
+    public function SoftDelete($id)
     {
         $article = Article::find($id);
         if ($article) {
 
-            File::delete(public_path() . '/' . $article->article_cover);
             $article->delete($id);
+            return $this->apiResponse(null, 'the Article  Moved to Trash successfully', 200);
+        }
+
+        return $this->apiResponse(null, 'the Article not found', 404);
+    }
+
+
+    //show trash
+    public function trash(){
+
+            $articles = ArticleResource::collection(Article::onlyTrashed()->orderBy('deleted_at', 'desc')->get());
+            if ($articles) {
+                return $this->apiResponse($articles, null , 200);
+            }
+            return $this->apiResponse(null, 'No Articles in Trash', 404);
+    }
+
+
+    //restore from trached
+    public function restore($id){
+
+
+            $article = Article::onlyTrashed()->where('id' , $id)->first()->restore();
+            return $this->apiResponse(null, 'Article restore successfully', 201);
+
+    }
+
+
+    //delete an article
+    public function forceDelete($id)
+    {
+        $article = Article::findOrFail($id);
+        if ($article) {
+
+            File::delete(public_path() . '/' . $article->article_cover);
+            $article->forcedelete();
             $article->tags()->detach();
             return $this->apiResponse(null, 'the Article deleted successfully', 200);
         }

@@ -106,17 +106,56 @@ class FoodController extends Controller
         return $this->apiResponse(null, 'the food not found', 404);
     }
 
-    //delete an article
-    public function destroy($id)
+
+
+    //soft delete
+    public function SoftDelete($id)
+    {
+        $food = Food::find($id);
+        if ($food) {
+
+            $food->delete($id);
+            return $this->apiResponse(null, ' Food  Moved to Trash successfully', 200);
+        }
+
+        return $this->apiResponse(null, ' Food not found', 404);
+    }
+
+
+    //show trash
+    public function trash(){
+
+            $foods = Food::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+            if ($foods) {
+                return $this->apiResponse($foods, null , 200);
+            }
+            return $this->apiResponse(null, 'No Foods in Trash', 404);
+    }
+
+
+    //restore from trached
+    public function restore($id){
+
+
+            $food = Food::onlyTrashed()->where('id' , $id)->first()->restore();
+            return $this->apiResponse(null, 'Food restore successfully', 201);
+
+    }
+
+
+    //delete an food
+    public function forceDelete($id)
     {
         $food = Food::findOrFail($id);
         if ($food) {
 
             File::delete(public_path() . '/' . $food->image);
-            $food->delete($id);
+            $food->forcedelete();
             return $this->apiResponse(null, 'the food deleted successfully', 200);
         }
 
         return $this->apiResponse(null, 'the food not found', 404);
     }
+
+
 }

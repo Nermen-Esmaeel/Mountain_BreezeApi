@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('type', ['Restaurant', 'Chalet', 'Activity', 'Nature', 'Events']);
             $table->string('name');
             $table->string('link');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

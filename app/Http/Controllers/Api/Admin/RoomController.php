@@ -81,11 +81,58 @@ class RoomController extends Controller
         return new RoomResource($room);
     }
 
+
+
+
+
+    //soft delete
+    public function SoftDelete($id)
+    {
+        $room = Room::find($id);
+        if ($room) {
+
+            $room->delete($id);
+            return response()->json([
+                'message' => 'Room moved to trash',
+            ], 200);
+        }
+
+        return response()->json([ 'message' => 'Invalid ID!',], 404);
+    }
+
+
+    //show trash
+    public function trash(){
+
+            $rooms = Room::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+            if ($rooms) {
+
+                return response()->json([
+                    'data' => $rooms ,
+                    'message' => 'ok',
+                ], 200);
+            }
+        return response()->json([ 'message' => 'No Rooms in Trash',], 404);
+
+    }
+
+
+    //restore from trached
+    public function restore($id){
+
+            $room = Room::onlyTrashed()->where('id' , $id)->first()->restore();
+            return response()->json([
+                'message' => 'Room restore successfully',
+            ], 201);
+
+    }
+
+
     public function destroy(Room $room)
     {
         Room::findOrFail($room->id);
         if ($room) {
-            $room->delete();
+            $room->forcedelete();
             return response()->json([
                 'message' => 'Room deleted successfuly!',
             ], 200);

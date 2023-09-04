@@ -43,7 +43,19 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::get('/{id}', [ArticleController::class, 'show']);
         Route::post('/', [ArticleController::class, 'store']);
         Route::post('/{id}', [ArticleController::class, 'update']);
-        Route::delete('/{id}', [ArticleController::class, 'destroy']);
+        //soft delete
+        Route::get('softDelete/{id}', [ArticleController::class, 'SoftDelete']);
+
+        //show trash
+        Route::get('/show/Trashed', [ArticleController::class, 'trash']);
+
+        //restore
+        Route::get('trash/restore/{id}', [ArticleController::class, 'restore']);
+
+        //Force Delete
+        Route::delete('/{id}', [ArticleController::class, 'forceDelete']);
+
+
     });
 
     //Post Tag Routes
@@ -66,7 +78,17 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::get('/{id}', [FoodController::class, 'show']);
         Route::post('/', [FoodController::class, 'store']);
         Route::post('/{id}', [FoodController::class, 'update']);
-        Route::delete('/{id}', [FoodController::class, 'destroy']);
+        //soft delete
+        Route::get('softDelete/{id}', [FoodController::class, 'SoftDelete']);
+
+        //show trash
+        Route::get('/show/Trashed', [FoodController::class, 'trash']);
+
+        //restore
+        Route::get('trash/restore/{id}', [FoodController::class, 'restore']);
+
+        //Force Delete
+        Route::delete('/{id}', [FoodController::class, 'forceDelete']);
 
     });
 
@@ -80,6 +102,16 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 
     //Rooms
+
+    //soft delete
+    Route::get('rooms/softDelete/{id}', [RoomController::class, 'SoftDelete']);
+
+    //show trash
+    Route::get('rooms/show/Trashed', [RoomController::class, 'trash']);
+
+    //restore
+    Route::get('rooms/trash/restore/{id}', [RoomController::class, 'restore']);
+
     Route::resource('rooms', RoomController::class);
 
 
@@ -93,9 +125,31 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::get('explores/article', [ExploreController::class, 'filteredExplore']);
     Route::resource('explores', ExploreController::class);
 
-    //contact as
-    Route::get('/contact' , [MessageController::class , 'index']);
-    Route::post('/contact' , [MessageController::class , 'store']);
+
+
+
+       //Food Route
+       Route::group([
+        'prefix' => '/contact',
+    ], function () {
+        //contact as
+        Route::get('/' , [MessageController::class , 'index']);
+        Route::post('/' , [MessageController::class , 'store']);
+
+        //soft delete
+        Route::get('softDelete/{id}', [MessageController::class, 'SoftDelete']);
+
+        //show trash
+        Route::get('/show/Trashed', [MessageController::class, 'trash']);
+
+        //restore
+        Route::get('trash/restore/{id}', [MessageController::class, 'restore']);
+
+        //Force Delete
+        Route::delete('/{id}', [MessageController::class, 'forceDelete']);
+
+    });
+
 
 });
 
