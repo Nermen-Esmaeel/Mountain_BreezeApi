@@ -90,6 +90,9 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         //Force Delete
         Route::delete('/{id}', [FoodController::class, 'forceDelete']);
 
+        //search
+        Route::get('/search/{term}' , [FoodController::class , 'search']);
+
     });
 
     //Food Route

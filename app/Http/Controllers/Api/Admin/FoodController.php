@@ -147,5 +147,15 @@ class FoodController extends Controller
         return $this->apiResponse(null, 'the food not found', 404);
     }
 
+    public function search($term){
+
+        $foods = Food::search($term)->get();
+        if(count($foods)){
+            return $this->apiResponse($foods, 'ok', 200);
+           }else{
+            return $this->apiResponse(null, 'There is no Food  like '.$term , 404);
+           }
+
+    }
 
 }
