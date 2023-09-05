@@ -25,7 +25,7 @@ class StoreFood extends FormRequest
     {
         return [
             'image' => 'image|file',
-            'category_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
+            'category_en' => 'required|in:Westren Food,Oriental Food,Traditional Food',
             'category_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
             'title_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
             'title_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
@@ -37,7 +37,7 @@ class StoreFood extends FormRequest
 
     public function messages(){
         return [
-             'category_en.regex'    => 'The category_en must include only english letters. ',
+            'category_en.in'    => 'category field must be Westren Food , Oriental Food or Traditional Food',
              'category_ar.regex'    => 'The category_ar must include only arabic letters.',
              'title_en.regex' => 'The title_en must include only english letters.',
              'title_ar.regex' => 'The title_ar must include only arabic letters.',

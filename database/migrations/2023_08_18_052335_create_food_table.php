@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('food', function (Blueprint $table) {
             $table->id();
             $table->string('image')->nullable();
-            $table->string('category_en');
+            $table->enum('category_en' , ['Westren Food' , 'Oriental Food' , 'Traditional Food']);
             $table->string('category_ar');
             $table->string('title_en');
             $table->string('title_ar');
