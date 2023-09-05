@@ -45,9 +45,9 @@ class FoodController extends Controller
 
         $input = $request->input();
 
-        // if ($request->hasFile('image')) {
-        //     $path = $this->UploadFile('Foods' , $request->file('image'));
-        // }
+        if ($request->hasFile('image')) {
+            $path = $this->UploadFile('Foods' , $request->file('image'));
+        }
         $food = Food::create([
 
             'category_en' =>  $input['category_en'],
@@ -58,23 +58,14 @@ class FoodController extends Controller
             'content_ar' =>  $input['content_ar'],
         ]);
 
-        // if ($request->image) {
+        if ($request->image) {
 
-        //     $food->update([
-        //         'image' => $path ,
-        //         'image_size' =>  $input['image_size'],
-        //     ]);
-        // }
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $path = $image->storeAs('images/foods', $filename);
-
-                $food->images()->create([
-                    'image_path' => $path,
-                ]);
-            }
+            $food->update([
+                'image' => $path ,
+                'image_size' =>  $input['image_size'],
+            ]);
         }
+       
         $food = Food::find($food->id);
         return $this->apiResponse($food, 'Food created successfully', 201);
     }

@@ -29,7 +29,7 @@ class StoreArticle extends FormRequest
         return [
 
             'article_cover' => 'required|image|file',
-            'category_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
+            'category_en' => 'required|in:Westren Food,Oriental Food,Traditional Food',
             'category_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
             'title_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
             'title_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',

@@ -27,7 +27,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 
 //Auth Routes
 Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
+    Route::post('login', 'login')->name('login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
 });
@@ -42,7 +42,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::get('/', [ArticleController::class, 'index']);
         Route::get('/{id}', [ArticleController::class, 'show']);
         Route::post('/', [ArticleController::class, 'store']);
-        Route::post('/{id}', [ArticleController::class, 'update']);
+        Route::put('/{id}', [ArticleController::class, 'update']);
         //soft delete
         Route::get('softDelete/{id}', [ArticleController::class, 'SoftDelete']);
 
@@ -54,8 +54,6 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
         //Force Delete
         Route::delete('/{id}', [ArticleController::class, 'forceDelete']);
-
-
     });
 
     //Post Tag Routes
@@ -63,11 +61,10 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         'prefix' => '/article.tags',
     ], function () {
 
-        Route::post('/{id}' , [ArticleController::class , 'deleteTagFormArticle']);
-        Route::get('/{id}' , [ArticleController::class , 'showArticleTag']);
         Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
         Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
-
+        Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
+        Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
     });
 
     //Food Route
@@ -89,7 +86,6 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
         //Force Delete
         Route::delete('/{id}', [FoodController::class, 'forceDelete']);
-
     });
 
     //Food Route
@@ -128,13 +124,13 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 
 
-       //Food Route
-       Route::group([
+    //Food Route
+    Route::group([
         'prefix' => '/contact',
     ], function () {
         //contact as
-        Route::get('/' , [MessageController::class , 'index']);
-        Route::post('/' , [MessageController::class , 'store']);
+        Route::get('/', [MessageController::class, 'index']);
+        Route::post('/', [MessageController::class, 'store']);
 
         //soft delete
         Route::get('softDelete/{id}', [MessageController::class, 'SoftDelete']);
@@ -147,9 +143,5 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
         //Force Delete
         Route::delete('/{id}', [MessageController::class, 'forceDelete']);
-
     });
-
-
 });
-

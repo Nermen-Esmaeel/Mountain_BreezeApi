@@ -32,7 +32,7 @@ class UpdateFood extends FormRequest
             'title_ar' => 'nullable|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
             'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/|max:1500',
             'content_ar' => 'nullable|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
-            'image_size'     => 'required|in:x1,x3'
+            'image_size'     => 'in:x1,x3'
             ];
     }
 
