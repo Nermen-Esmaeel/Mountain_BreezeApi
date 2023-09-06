@@ -19,8 +19,8 @@ class FoodResource extends JsonResource
             'id' => $this->id,
             'image' => asset($this->image),
             'category' => [
-                'en' => $this->category_en,
-                'ar' => $this->category_ar,
+                'en' => when($this->category_en ,$this->category_en ) ,
+                'ar' => when($this->category_ar , $this->category_ar),
             ],
             'title' => [
                 'en' => $this->title_en,

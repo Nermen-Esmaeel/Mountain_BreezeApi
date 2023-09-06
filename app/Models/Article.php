@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\{SoftDeletes ,Builder};
+
 
 
 
@@ -48,5 +49,24 @@ class Article extends Model
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    protected $searchable = [
+        'category_en',
+        'category_ar',
+        'title_en',
+        'title_ar',
+        'content_en',
+        'content_ar',
+    ];
+
+    public function scopeSearch(Builder $builder , string $term){
+
+
+        foreach ($this->searchable as $searchable){
+            $builder->orWhere($searchable , 'like' , "%$term%");
+        }
+
+        return $builder;
     }
 }

@@ -56,6 +56,10 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::delete('/{id}', [ArticleController::class, 'forceDelete']);
 
 
+        //search
+        Route::get('/search/{term}' , [ArticleController::class , 'search']);
+
+
     });
 
     //Post Tag Routes
@@ -95,12 +99,12 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
     });
 
-    //Food Route
+    //Book Route
     Route::group([
         'prefix' => '/books',
     ], function () {
         Route::get('/', [BookController::class, 'index']);
-        Route::post('/', [BookController::class, 'store']);
+        Route::post('/store', [BookController::class, 'store']);
     });
 
 

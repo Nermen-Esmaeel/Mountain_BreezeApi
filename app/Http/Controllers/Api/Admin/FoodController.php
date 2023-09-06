@@ -18,12 +18,15 @@ class FoodController extends Controller
 
 
     //Show All foods
-    public function index()
+    public function index(Request $request)
     {
-        $foods  = FoodResource::collection(Food::query()->get());
 
+       $foods = Food::query();
+       if($request->category){
+            $foods->where('category_' . request()->header('language') , $request->category );
+           }
 
-        return $this->apiResponse($foods, '', 200);
+        return $this->apiResponse(FoodResource::collection($foods->get()), '', 200);
     }
 
     //show one food
@@ -147,6 +150,7 @@ class FoodController extends Controller
         return $this->apiResponse(null, 'the food not found', 404);
     }
 
+    //search
     public function search($term){
 
         $foods = Food::search($term)->get();

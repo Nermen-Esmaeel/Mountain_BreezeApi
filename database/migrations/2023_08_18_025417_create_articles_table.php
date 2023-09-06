@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title_ar');
             $table->longText('content_en');
             $table->longText('content_ar');
-            $table->string('date');
+            $table->date('date');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Book ;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
 use App\Http\Requests\Booking\StoreBooking;
@@ -14,11 +15,22 @@ class BookController extends Controller
 {
     use ApiResponseTrait;
 
+
+
      //Show All Article
-     public function index()
+     public function index(Request $request)
      {
-         $books  = BookResource::collection(Book::query()->get());
-         return $this->apiResponse($books,'ok' ,200);
+        $bookings = Book::query();
+        if($request->room_type){
+             $bookings->where('room_type', $request->room_type );
+         }
+        if($request->guests_number){
+            $bookings->where('guests_number','=', $request->guests_number);
+        }
+        if($request->date){
+            $bookings->whereDate('created_at', $request->date);
+        }
+         return $this->apiResponse(BookResource::collection($bookings->get()), '', 200);
      }
 
 

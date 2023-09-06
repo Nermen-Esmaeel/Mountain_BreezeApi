@@ -16,11 +16,19 @@ class ArticleController extends Controller
     use ApiResponseTrait, UploadFile;
 
     //Show All Article
-    public function index()
+    public function index(Request $request)
     {
 
-        $articles  = ArticleResource::collection(Article::query()->with(['images'])->with(['tags'])->get());
-        return $this->apiResponse($articles, '', 200);
+
+        $articles = Article::query();
+        if($request->category){
+             $articles->where('category_' . request()->header('language') , $request->category );
+            }
+        if($request->date){
+            $articles->where('date', $request->date);
+        }
+         return $this->apiResponse(ArticleResource::collection($articles->with(['tags'])->get()), '', 200);
+
     }
 
     //show one article
@@ -198,5 +206,17 @@ class ArticleController extends Controller
             return  $article->load('tags');
         }
         return $this->apiResponse(null, 'the Article not found', 404);
+    }
+
+       //search
+       public function search($term){
+
+        $articles = Article::search($term)->get();
+        if(count($articles)){
+            return $this->apiResponse($articles, 'ok', 200);
+           }else{
+            return $this->apiResponse(null, 'There is no Article  like '.$term , 404);
+           }
+
     }
 }
