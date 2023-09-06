@@ -12,11 +12,11 @@ class Image extends Model
     protected $fillable = [
         'image_path',
     ];
-
     public function imageable()
     {
         return $this->morphTo();
     }
+
 
     public function article(): BelongsTo
     {
