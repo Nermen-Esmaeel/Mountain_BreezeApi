@@ -39,8 +39,8 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::group([
         'prefix' => '/articles',
     ], function () {
-        Route::get('/', [ArticleController::class, 'index']);
-        Route::get('/{id}', [ArticleController::class, 'show']);
+        Route::get('/', [ArticleController::class, 'index'])->withoutMiddleware(['auth:api']);
+        Route::get('/{id}', [ArticleController::class, 'show'])->withoutMiddleware(['auth:api']);
         Route::post('/', [ArticleController::class, 'store']);
         Route::post('/{id}', [ArticleController::class, 'update']);
         //soft delete
@@ -78,8 +78,8 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::group([
         'prefix' => '/foods',
     ], function () {
-        Route::get('/', [FoodController::class, 'index']);
-        Route::get('/{id}', [FoodController::class, 'show']);
+        Route::get('/', [FoodController::class, 'index'])->withoutMiddleware(['auth:api']);
+        Route::get('/{id}', [FoodController::class, 'show'])->withoutMiddleware(['auth:api']);
         Route::post('/', [FoodController::class, 'store']);
         Route::post('/{id}', [FoodController::class, 'update']);
         //soft delete
@@ -104,11 +104,12 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         'prefix' => '/books',
     ], function () {
         Route::get('/', [BookController::class, 'index']);
-        Route::post('/store', [BookController::class, 'store']);
+        Route::post('/', [BookController::class, 'store'])->withoutMiddleware(['auth:api']);
     });
 
 
-    //Rooms
+
+    //Room Soft delete
 
     //soft delete
     Route::get('rooms/softDelete/{id}', [RoomController::class, 'SoftDelete']);
@@ -119,18 +120,17 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     //restore
     Route::get('rooms/trash/restore/{id}', [RoomController::class, 'restore']);
 
-    Route::resource('rooms', RoomController::class);
 
 
     //Galary
     Route::post('galary', [GalaryController::class, 'storeImages']);
-    Route::get('galary', [GalaryController::class, 'filteredImages']);
+    Route::get('galary', [GalaryController::class, 'filteredImages'])->withoutMiddleware(['auth:api']);
     Route::post('videos', [GalaryController::class, 'storeVideos']);
-    Route::get('videos', [GalaryController::class, 'filteredVideos']);
+    Route::get('videos', [GalaryController::class, 'filteredVideos'])->withoutMiddleware(['auth:api']);
 
     //explore
-    Route::get('explores/article', [ExploreController::class, 'filteredExplore']);
-    Route::resource('explores', ExploreController::class);
+    Route::get('explores/article', [ExploreController::class, 'filteredExplore'])->withoutMiddleware(['auth:api']);
+
 
 
 
@@ -141,7 +141,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     ], function () {
         //contact as
         Route::get('/' , [MessageController::class , 'index']);
-        Route::post('/' , [MessageController::class , 'store']);
+        Route::post('/' , [MessageController::class , 'store'])->withoutMiddleware(['auth:api']);
 
         //soft delete
         Route::get('softDelete/{id}', [MessageController::class, 'SoftDelete']);
@@ -160,3 +160,12 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 });
 
+Route::prefix('dashboard')->group(function () {
+
+    //Rooms
+    Route::resource('rooms', RoomController::class);
+
+    //Explore
+    Route::resource('explores', ExploreController::class);
+
+});
