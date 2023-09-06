@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name_ar');
             $table->string('name_en');
             $table->string('type');
+            $table->integer('floor');
+            $table->boolean('room_services');
+            $table->string('bed');
+            $table->boolean('TV');
             $table->integer('guests_number');
             $table->integer('price');
             $table->longText('content_ar');

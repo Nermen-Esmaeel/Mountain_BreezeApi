@@ -26,6 +26,10 @@ class RoomResource extends JsonResource
             ],
             'type' => $this->type,
             'guests_number' => $this->guests_number,
+            'floor' => $this->floor,
+            'room_services' => $this->room_services,
+            'bed' => $this->bed,
+            'TV' => $this->TV,
             'price' => $this->price,
             'room.images' =>  ImageResource::collection($this->images),
         ];

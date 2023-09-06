@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
-
     public function  index()
     {
         $rooms = Room::all();
@@ -37,7 +35,11 @@ class RoomController extends Controller
             'guests_number' => $request->guests_number,
             'price' => $request->price,
             'content_en' => $request->content_en,
-            'content_ar' => $request->content_ar
+            'content_ar' => $request->content_ar,
+            'floor' => $request->floor,
+            'room_services' => $request->room_services,
+            'bed' => $request->bed,
+            'TV' => $request->TV
         ]);
 
         if ($request->hasFile('images')) {
@@ -99,34 +101,34 @@ class RoomController extends Controller
             ], 200);
         }
 
-        return response()->json([ 'message' => 'Invalid ID!',], 404);
+        return response()->json(['message' => 'Invalid ID!',], 404);
     }
 
 
     //show trash
-    public function trash(){
+    public function trash()
+    {
 
-            $rooms = Room::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
-            if ($rooms) {
+        $rooms = Room::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+        if ($rooms) {
 
-                return response()->json([
-                    'data' => $rooms ,
-                    'message' => 'ok',
-                ], 200);
-            }
-        return response()->json([ 'message' => 'No Rooms in Trash',], 404);
-
+            return response()->json([
+                'data' => $rooms,
+                'message' => 'ok',
+            ], 200);
+        }
+        return response()->json(['message' => 'No Rooms in Trash',], 404);
     }
 
 
     //restore from trached
-    public function restore($id){
+    public function restore($id)
+    {
 
-            $room = Room::onlyTrashed()->where('id' , $id)->first()->restore();
-            return response()->json([
-                'message' => 'Room restore successfully',
-            ], 201);
-
+        $room = Room::onlyTrashed()->where('id', $id)->first()->restore();
+        return response()->json([
+            'message' => 'Room restore successfully',
+        ], 201);
     }
 
 

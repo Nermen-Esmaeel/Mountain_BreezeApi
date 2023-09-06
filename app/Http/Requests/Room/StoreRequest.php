@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
 {
-   
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,7 +23,11 @@ class StoreRequest extends FormRequest
             'price' => 'required|numeric',
             'content_en' => 'required|string',
             'content_ar' => 'required|string',
-            'images.*' => 'required'
+            'images.*' => 'required',
+            'room_services' => 'required|boolean',
+            'bed' => 'required|string',
+            'floor' => 'required|integer|min:1',
+            'TV' => 'required|boolean'
         ];
     }
 }

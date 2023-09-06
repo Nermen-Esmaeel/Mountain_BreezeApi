@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Room extends Model
 {
-    use HasFactory , SoftDeletes ;
+    use HasFactory, SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
@@ -22,15 +22,14 @@ class Room extends Model
         'price',
         'content_en',
         'content_ar',
+        'floor',
+        'room_services',
+        'bed',
+        'TV'
     ];
 
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
     }
-
-
-
-
-
 }
