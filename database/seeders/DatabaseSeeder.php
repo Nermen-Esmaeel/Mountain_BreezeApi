@@ -15,12 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+
+
         User::create([
             'id' => 1,
             'name' => 'Super Admin',
@@ -30,5 +27,14 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        $this->call([
+            BookSeeder::class,
+            FoodSeeder::class,
+            Contact_asSeeder::class,
+            TagSeeder::class,
+            BlogSeeder::class,
+        ]);
+
     }
 }
