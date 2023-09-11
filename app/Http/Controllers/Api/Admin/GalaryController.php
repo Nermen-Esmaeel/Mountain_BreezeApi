@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class GalaryController extends Controller
 {
-    public function filteredImages(Request $request)
+    public function index(Request $request)
     {
         $rules = [
             'type' => 'in:Events,Nature,Activity,Chalet,Restaurant',
@@ -28,42 +28,15 @@ class GalaryController extends Controller
             ], 422);
         }
 
-        $type = $request->query('type');
         $imageQuery = Galary::query();
 
-        if ($type) {
-            $imageQuery = $imageQuery->where('type', 'LIKE', '%' . $type . '%');
+        if ($request->type) {
+            $imageQuery = $imageQuery->where('type', 'LIKE', '%' . $request->type . '%');
         }
-        $filteredImages = $imageQuery->get();
-        if ($type === 'Events') {
-            return response()->json([
-                'events' => GalaryResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Nature') {
-            return response()->json([
-                'nature' => GalaryResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Activity') {
-            return response()->json([
-                'activities' => GalaryResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Chalet') {
-            return response()->json([
-                'chalets' => GalaryResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Restaurant') {
-            return response()->json([
-                'restaurants' => GalaryResource::collection($filteredImages),
-            ], 200);
-        } else {
-            // Return all images if no specific type is provided
-            return response()->json([
-                'images' => GalaryResource::collection($filteredImages),
-            ], 200);
-        }
+        return GalaryResource::collection($imageQuery->get());
     }
 
-    public function storeImages(StoreRequest $request)
+    public function store(StoreRequest $request)
     {
         $request->validated();
 
@@ -83,66 +56,5 @@ class GalaryController extends Controller
         }
 
         return new GalaryResource($galary);
-    }
-    public function filteredVideos(Request $request)
-    {
-        $rules = [
-            'type' => 'in:Events,Nature,Activity,Chalet,Restaurant',
-        ];
-
-        $validator = Validator::make($request->query(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => $validator->errors()->all(),
-            ], 422);
-        }
-
-        $type = $request->query('type');
-        $imageQuery = Video::query();
-
-        if ($type) {
-            $imageQuery = $imageQuery->where('type', 'LIKE', '%' . $type . '%');
-        }
-        $filteredImages = $imageQuery->get();
-        if ($type === 'Events') {
-            return response()->json([
-                'events' => VideoResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Nature') {
-            return response()->json([
-                'nature' => VideoResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Activity') {
-            return response()->json([
-                'activities' => VideoResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Chalet') {
-            return response()->json([
-                'chalets' => VideoResource::collection($filteredImages),
-            ], 200);
-        } elseif ($type === 'Restaurant') {
-            return response()->json([
-                'restaurants' => VideoResource::collection($filteredImages),
-            ], 200);
-        } else {
-            // Return all images if no specific type is provided
-            return response()->json([
-                'images' => VideoResource::collection($filteredImages),
-            ], 200);
-        }
-    }
-
-    public function storeVideos(VideosStoreRequest $request)
-    {
-        $request->validated();
-
-        $video = Video::create([
-            'type' => $request->type,
-            'name' => $request->name,
-            'link' => $request->link
-        ]);
-
-        return new VideoResource($video);
     }
 }

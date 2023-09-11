@@ -8,8 +8,9 @@ use App\Http\Requests\Room\UpdateRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\Image;
 use App\Models\Room;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -17,10 +18,38 @@ class RoomController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
-    public function  index()
+
+    public function  index(Request $request)
     {
-        $rooms = Room::all();
-        return RoomResource::collection($rooms);
+        $rules = [
+            'type' => 'string',
+            'guests_number' => 'integer',
+            'min_price' => 'numeric',
+            'max_price' => 'numeric'
+        ];
+
+        $validator = Validator::make($request->query(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->all(),
+            ], 422);
+        }
+
+        $rooms = Room::query();
+        if ($request->room_type) {
+            $rooms->where('type', $request->type);
+        }
+        if ($request->guests_number) {
+            $rooms->where('guests_number', '=', $request->guests_number);
+        }
+        if ($request->min_price) {
+            $rooms->where('price', '>=', $request->min_price);
+        } elseif ($request->max_price) {
+            $rooms->where('price', '<=', $request->max_price);
+        }
+
+        return RoomResource::collection($rooms->get());
     }
 
     public function store(StoreRequest $request)

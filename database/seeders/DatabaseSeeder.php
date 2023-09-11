@@ -34,6 +34,10 @@ class DatabaseSeeder extends Seeder
             Contact_asSeeder::class,
             TagSeeder::class,
             BlogSeeder::class,
+            RoomSeeder::class,
+            GallarySeeder::class,
+            VideoSeeder::class,
+            ExploreSeeder::class,
         ]);
 
     }

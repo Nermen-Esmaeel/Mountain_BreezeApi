@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 use Carbon\Carbon;
 use App\Models\Article;
-
+use App\Models\Image;
 
 class BlogSeeder extends Seeder
 {
@@ -35,8 +35,15 @@ class BlogSeeder extends Seeder
 
     ]);
 
-    $article->tags()->syncWithoutDetaching([
-        1
-    ]);
+        $article->tags()->syncWithoutDetaching([
+            1
+        ]);
+
+        Image::create([
+            'image_path' => 'images/blog/1694375023_post.png',
+            'imageable_type' => Article::class,
+            'imageable_id' => $article->id,
+        ]);
+
     }
 }

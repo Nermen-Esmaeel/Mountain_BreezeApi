@@ -15,11 +15,27 @@ use SebastianBergmann\Exporter\Exporter;
 class ExploreController extends Controller
 {
 
-    // public function index()
-    // {
-    //     $explore = Explore::all();
-    //     return ExploreResource::collection($explore);
-    // }
+    public function index(Request $request)
+    {
+        $rules = [
+            'tags' => 'in:Events,Nature,Activity,Chalet,Restaurant,Pool',
+        ];
+
+        $validator = Validator::make($request->query(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->all(),
+            ], 422);
+        }
+
+        $exploreQuery = Explore::query();
+
+        if ($request->tags) {
+            $exploreQuery = $exploreQuery->where('tags', 'LIKE', '%' . $request->tags . '%');
+        }
+        return ExploreResource::collection($exploreQuery->get());
+    }
 
 
     public function store(StoreRequest $request)
@@ -29,7 +45,7 @@ class ExploreController extends Controller
         if ($request->hasFile('article_cover') && $request->file('article_cover')->isValid()) {
             $image = $request->file('article_cover');
             $imageName = time() . '_' . $image->getClientOriginalName();
-            $path =  $image->storeAs('images', $imageName, 'public');
+            $path =  $image->storeAs('images/explore', $imageName, 'public');
         }
 
         $explore = Explore::create([
@@ -65,10 +81,10 @@ class ExploreController extends Controller
 
         if ($request->hasFile('article_cover') && $request->file('article_cover')->isValid()) {
 
-            Storage::disk('public')->delete('images/' . $explore->image);
+            Storage::disk('public')->delete('images/explore' . $explore->image);
             $newImage = $request->file('article_cover');
             $newImageName = time() . '_' . $newImage->getClientOriginalName();
-            $path = $newImage->storeAs('images', $newImageName, 'public');
+            $path = $newImage->storeAs('images/explore', $newImageName, 'public');
             $explore->article_cover = $path;
         }
         $explore->update($data);
@@ -91,59 +107,6 @@ class ExploreController extends Controller
             return response()->json([
                 'message' => 'Invalid ID!',
             ], 404);
-        }
-    }
-
-    public function filteredExplore(Request $request)
-    {
-        $rules = [
-            'tags' => 'in:Events,Nature,Activity,Chalet,Restaurant,Pool',
-        ];
-
-        $validator = Validator::make($request->query(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => $validator->errors()->all(),
-            ], 422);
-        }
-
-        $tags = $request->query('tags');
-        $exploreQuery = Explore::query();
-
-        if ($tags) {
-            $exploreQuery = $exploreQuery->where('tags', 'LIKE', '%' . $tags . '%');
-        }
-        $filteredExplore = $exploreQuery->get();
-        if ($tags === 'Events') {
-            return response()->json([
-                'events' => ExploreResource::collection($filteredExplore),
-            ], 200);
-        } elseif ($tags === 'Nature') {
-            return response()->json([
-                'nature' => ExploreResource::collection($filteredExplore),
-            ], 200);
-        } elseif ($tags === 'Activity') {
-            return response()->json([
-                'activities' => ExploreResource::collection($filteredExplore),
-            ], 200);
-        } elseif ($tags === 'Chalet') {
-            return response()->json([
-                'chalets' => ExploreResource::collection($filteredExplore),
-            ], 200);
-        } elseif ($tags === 'Restaurant') {
-            return response()->json([
-                'restaurants' => ExploreResource::collection($filteredExplore),
-            ], 200);
-        } elseif ($tags === 'Pool') {
-            return response()->json([
-                'Pools' => ExploreResource::collection($filteredExplore),
-            ], 200);
-        } else {
-            // Return all explores if no specific type is provided
-            return response()->json([
-                'Articles' => ExploreResource::collection($filteredExplore),
-            ], 200);
         }
     }
 }
