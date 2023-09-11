@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ArticleResource extends JsonResource
+class FoodResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +17,7 @@ class ArticleResource extends JsonResource
         return [
 
             'id' => $this->id,
-            'article_cover' => asset($this->article_cover),
+            'image' => asset($this->image),
             'category' => [
                 'en' => $this->category_en,
                 'ar' => $this->category_ar,
@@ -27,17 +27,13 @@ class ArticleResource extends JsonResource
                 'ar' => $this->title_ar,
             ],
 
-            'content' => [
+             'content' => [
                 'en' => $this->content_en,
                 'ar' => $this->content_ar,
             ],
+            'image_size' => $this->image_size,
 
-            'date' => $this->date,
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
 
-            'tags' =>  TagResource::collection($this->whenLoaded('tags')),
-            'images' =>  ImageResource::collection($this->whenLoaded('images')),
         ];
     }
 }

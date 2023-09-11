@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GalaryResource extends JsonResource
+class TagResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class GalaryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'type' => $this->type,
-            'images' =>  ImageResource::collection($this->images),
-        ];
+
+            'name'=>$this->name,
+                ];
     }
 }
