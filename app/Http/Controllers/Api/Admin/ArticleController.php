@@ -27,7 +27,7 @@ class ArticleController extends Controller
         if($request->date){
             $articles->where('date', $request->date);
         }
-         return $this->apiResponse(ArticleResource::collection($articles->with(['tags'])->get()), '', 200);
+         return $this->apiResponse(ArticleResource::collection($articles->with(['tags' , 'images'])->get()), '', 200);
 
     }
 
@@ -39,7 +39,7 @@ class ArticleController extends Controller
         //fetch  post from database and store in $posts
         if ($article) {
 
-            $article = Article::query()->where('id', '=', $id)->first();
+            $article = Article::query()->where('id', '=', $id)->with(['tags' , 'images'])->first();
 
             return $this->apiResponse(new ArticleResource($article), 'ok', 200);
         }

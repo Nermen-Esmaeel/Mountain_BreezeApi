@@ -17,7 +17,7 @@ class ArticleResource extends JsonResource
         return [
 
             'id' => $this->id,
-            'article_cover' => asset($this->article_cover),
+            'article_cover' => $this->article_cover,
             'category' => [
                 'en' => $this->category_en,
                 'ar' => $this->category_ar,

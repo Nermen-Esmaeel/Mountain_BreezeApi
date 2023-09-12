@@ -14,10 +14,11 @@ class TagSeeder extends Seeder
      */
     public function run(): void
     {
+        $tags = ['#Restaurant' ,'#Chalet' , '#Activity' , '#Nature' , '#Pool', '#Events'];
+        foreach($tags as $tag){
         Tag::create([
-
-            'name' => 'Article',
-
+            'name' => $tag,
         ]);
+    }
     }
 }

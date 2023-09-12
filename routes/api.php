@@ -128,7 +128,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::get('videos', [VideoController::class, 'index'])->withoutMiddleware(['auth:api']);
 
     //explore
-    Route::get('explores/article', [ExploreController::class, 'filteredExplore'])->withoutMiddleware(['auth:api']);
+    Route::get('explores/article', [ExploreController::class, 'index'])->withoutMiddleware(['auth:api']);
 
 
 

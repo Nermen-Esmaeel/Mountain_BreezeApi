@@ -85,7 +85,7 @@ class ExploreController extends Controller
             $newImage = $request->file('article_cover');
             $newImageName = time() . '_' . $newImage->getClientOriginalName();
             $path = $newImage->storeAs('images/explore', $newImageName, 'public');
-            $explore->article_cover = $path;
+            $data['article_cover'] = $path;
         }
         $explore->update($data);
 
