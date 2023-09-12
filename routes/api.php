@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Admin\ArticleController;
 use App\Http\Controllers\Api\Admin\FoodController;
 use App\Http\Controllers\Api\Admin\BookController;
 use App\Http\Controllers\Api\Admin\MessageController;
+use App\Http\Controllers\Api\Admin\VideoController;
 use App\Http\Controllers\Api\Auth\AuthController;
 
 
@@ -57,9 +58,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 
         //search
-        Route::get('/search/{term}' , [ArticleController::class , 'search']);
-
-
+        Route::get('/search/{term}', [ArticleController::class, 'search']);
     });
 
     //Post Tag Routes
@@ -67,11 +66,10 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         'prefix' => '/article.tags',
     ], function () {
 
-        Route::post('/{id}' , [ArticleController::class , 'deleteTagFormArticle']);
-        Route::get('/{id}' , [ArticleController::class , 'showArticleTag']);
         Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
         Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
-
+        Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
+        Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
     });
 
     //Food Route
@@ -95,8 +93,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::delete('/{id}', [FoodController::class, 'forceDelete']);
 
         //search
-        Route::get('/search/{term}' , [FoodController::class , 'search']);
-
+        Route::get('/search/{term}', [FoodController::class, 'search']);
     });
 
     //Book Route
@@ -123,10 +120,12 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 
     //Galary
-    Route::post('galary', [GalaryController::class, 'storeImages']);
-    Route::get('galary', [GalaryController::class, 'filteredImages'])->withoutMiddleware(['auth:api']);
-    Route::post('videos', [GalaryController::class, 'storeVideos']);
-    Route::get('videos', [GalaryController::class, 'filteredVideos'])->withoutMiddleware(['auth:api']);
+    Route::post('galary', [GalaryController::class, 'store']);
+    Route::get('galary', [GalaryController::class, 'index'])->withoutMiddleware(['auth:api']);
+
+    //video
+    Route::post('videos', [VideoController::class, 'store']);
+    Route::get('videos', [VideoController::class, 'index'])->withoutMiddleware(['auth:api']);
 
     //explore
     Route::get('explores/article', [ExploreController::class, 'filteredExplore'])->withoutMiddleware(['auth:api']);
@@ -135,13 +134,13 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 
 
-       //Food Route
-       Route::group([
+    //Food Route
+    Route::group([
         'prefix' => '/contact',
     ], function () {
         //contact as
-        Route::get('/' , [MessageController::class , 'index']);
-        Route::post('/' , [MessageController::class , 'store'])->withoutMiddleware(['auth:api']);
+        Route::get('/', [MessageController::class, 'index']);
+        Route::post('/', [MessageController::class, 'store'])->withoutMiddleware(['auth:api']);
 
         //soft delete
         Route::get('softDelete/{id}', [MessageController::class, 'SoftDelete']);
@@ -154,10 +153,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
         //Force Delete
         Route::delete('/{id}', [MessageController::class, 'forceDelete']);
-
     });
-
-
 });
 
 Route::prefix('dashboard')->group(function () {
@@ -167,5 +163,4 @@ Route::prefix('dashboard')->group(function () {
 
     //Explore
     Route::resource('explores', ExploreController::class);
-
 });
