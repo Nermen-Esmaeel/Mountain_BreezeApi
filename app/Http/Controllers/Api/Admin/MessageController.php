@@ -41,7 +41,7 @@ class MessageController extends Controller
 
 
     $message->save();
-    $message = Message::find($message->id)->first();
+    $message = Message::find($message->id);
     return $this->apiResponse(new MessageResource($message), 'Message sent successfully', 201);
 
 }

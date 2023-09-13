@@ -23,13 +23,13 @@ class StoreBooking extends FormRequest
     {
         return [
             'full_name' => 'required|string',
-            'phone' => 'required|string|max:10',
-            'email' => 'required|email',
+            'phone' => 'required|string|min:8',
+            'email' => 'nullable|email',
             'check_in_date' => 'required|date',
             'check_out_date' => 'required|date|after_or_equal:check_in_date',
             'room_type' => 'required|string',
             'guests_number' => 'required|integer',
-            'content' => 'required|string|max:1500',
+            'content' => 'nullable|string',
         ];
     }
 }

@@ -32,8 +32,7 @@ class FoodController extends Controller
     //show one food
     public function show($id)
     {
-        $food = Food::query()->where('id', '=', $id)->first();
-
+        $food = Food::findOrFail($id);
         if ($food) {
             return $this->apiResponse(new FoodResource($food), 'ok', 200);
         }

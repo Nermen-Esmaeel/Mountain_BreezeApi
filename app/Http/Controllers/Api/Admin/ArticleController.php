@@ -96,7 +96,7 @@ class ArticleController extends Controller
             }
         }
 
-        $article = Article::find($article->id)->with(['images'])->orderBy('id', 'Desc')->first();
+        $article = Article::find($article->id)->with(['images'])->orderBy('id', 'Desc');
 
         return $this->apiResponse(new ArticleResource($article), 'Article created successfully', 201);
     }

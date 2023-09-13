@@ -55,7 +55,7 @@ class BookController extends Controller
 
 
    $booking->save();
-   $booking = Book::find($booking->id)->first();
+   $booking = Book::find($booking->id);
     return $this->apiResponse(new BookResource($booking), 'booking created successfully', 201);
 
  }

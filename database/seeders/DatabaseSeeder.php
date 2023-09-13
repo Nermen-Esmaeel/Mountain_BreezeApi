@@ -28,17 +28,19 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        $this->call([
-            BookSeeder::class,
-            FoodSeeder::class,
-            Contact_asSeeder::class,
-            TagSeeder::class,
-            BlogSeeder::class,
-            RoomSeeder::class,
-            GallarySeeder::class,
-            VideoSeeder::class,
-            ExploreSeeder::class,
-        ]);
 
+        for ($i = 0; $i < 7; $i++){
+            $this->call([
+                BookSeeder::class,
+                FoodSeeder::class,
+                Contact_asSeeder::class,
+                TagSeeder::class,
+                BlogSeeder::class,
+                RoomSeeder::class,
+                GallarySeeder::class,
+                VideoSeeder::class,
+                ExploreSeeder::class,
+            ]);
+    }
     }
 }

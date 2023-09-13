@@ -25,13 +25,13 @@ class StoreFood extends FormRequest
     {
         return [
             'image' => 'image|file',
-            'category_en' => 'required|in:Westren Food,Oriental Food,Traditional Food',
-            'category_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
-            'title_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
-            'title_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
-            'content_en' => 'required|string|regex:/^[a-zA-Z& ]+$/|max:1500',
-            'content_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
-            'image_size'     => 'required|in:x1,x3'
+            'category_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
+            'category_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'title_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
+            'title_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'content_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
+            'content_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'image_size'     => 'nullable|in:x1,x3'
         ];
     }
 

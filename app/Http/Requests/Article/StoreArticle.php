@@ -29,13 +29,13 @@ class StoreArticle extends FormRequest
         return [
 
             'article_cover' => 'required|image|file',
-            'category_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
-            'category_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
-            'title_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
-            'title_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
-            'content_en' => 'required|string|regex:/^[a-zA-Z& ]+$/|max:1500',
-            'content_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
-            'date'     => 'required|date'
+            'category_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
+            'category_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'title_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
+            'title_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/',
+            'content_ar' => 'nullable|string|regex:/^[\p{Arabic} ]+$/u',
+            'date'     => 'nullable|date'
         ];
     }
 
