@@ -21,8 +21,7 @@ class Article extends Model
     protected $fillable=[
 
         'article_cover',
-        'category_en',
-        'category_ar',
+        'category',
         'title_en',
         'title_ar',
         'content_en',
@@ -52,8 +51,7 @@ class Article extends Model
     }
 
     protected $searchable = [
-        'category_en',
-        'category_ar',
+        'category',
         'title_en',
         'title_ar',
         'content_en',

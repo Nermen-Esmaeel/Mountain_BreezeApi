@@ -163,7 +163,7 @@ class RoomController extends Controller
 
     public function destroy(Room $room)
     {
-        Room::findOrFail($room->id);
+        Room::onlyTrashed()->where('id', $id);
         if ($room) {
             $room->forcedelete();
             return response()->json([

@@ -23,7 +23,7 @@ class FoodController extends Controller
 
        $foods = Food::query();
        if($request->category){
-            $foods->where('category_' . request()->header('language') , $request->category );
+            $foods->where('category', $request->category );
            }
 
         return $this->apiResponse(FoodResource::collection($foods->get()), '', 200);
@@ -51,8 +51,7 @@ class FoodController extends Controller
         }
         $food = Food::create([
 
-            'category_en' =>  $input['category_en'],
-            'category_ar' =>  $input['category_ar'],
+            'category' =>  $input['category'],
             'title_en' => $input['title_en'],
             'title_ar' =>  $input['title_ar'],
             'content_en' =>  $input['content_en'],
@@ -138,10 +137,11 @@ class FoodController extends Controller
     //delete an food
     public function forceDelete($id)
     {
-        $food = Food::findOrFail($id);
+        $food = Food::onlyTrashed()->where('id', $id);
+
         if ($food) {
 
-            File::delete(public_path() . '/' . $food->image);
+           File::delete(public_path() . '/' . $food->image);
             $food->forcedelete();
             return $this->apiResponse(null, 'the food deleted successfully', 200);
         }

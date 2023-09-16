@@ -26,8 +26,7 @@ class UpdateArticle extends FormRequest
     {
         return [
             'article_cover' => 'image|file',
-            'category_en' => 'nullable|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
-            'category_ar' => 'nullable|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
+            'category' => 'nullable|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
             'title_en' => 'nullable|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
             'title_ar' => 'nullable|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
             'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/|max:1500',
@@ -39,8 +38,7 @@ class UpdateArticle extends FormRequest
     public function messages(){
         return [
 
-            'category_en.regex'    => 'The category_en must include only english letters. ',
-            'category_ar.regex'    => 'The category_ar must include only arabic letters.',
+            'category.regex'    => 'The category must include only english letters. ',
             'title_en.regex' => 'The title_en must include only english letters.',
             'title_ar.regex' => 'The title_ar must include only arabic letters.',
             'content_en.regex' => 'The content_en must include only english letters.',

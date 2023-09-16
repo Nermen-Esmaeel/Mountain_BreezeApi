@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Models\{Article, Image, Tag};
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\ArticleResource;
+use App\Http\Resources\{ArticleResource,TagResource};
 use App\Http\Requests\Article\{StoreArticle, UpdateArticle};
 use App\Traits\{UploadFile, ApiResponseTrait};
 use Illuminate\Support\Facades\File;
@@ -22,7 +22,7 @@ class ArticleController extends Controller
 
         $articles = Article::query();
         if($request->category){
-             $articles->where('category_' . request()->header('language') , $request->category );
+             $articles->where('category', $request->category );
             }
         if($request->date){
             $articles->where('date', $request->date);
@@ -59,8 +59,7 @@ class ArticleController extends Controller
 
         $article = Article::create([
             'article_cover' =>  $path,
-            'category_en' =>  $input['category_en'],
-            'category_ar' =>  $input['category_ar'],
+            'category' =>  $input['category'],
             'title_en' => $input['title_en'],
             'title_ar' =>  $input['title_ar'],
             'content_en' =>  $input['content_en'],
@@ -83,20 +82,18 @@ class ArticleController extends Controller
             }
         }
 
-        //add tags for tags_table
-        if ($tags = $request->tags) {
 
+        //add tags for Article table
+        if ($tags = $request->tags) {
             foreach ($tags as $tag) {
-                $tag = Tag::create([
-                    'name' => $tag,
-                ]);
-                $tag->save();
-                //add tags for Article table
-                $article->tags()->syncWithoutDetaching($tag->id);
+                $tag_id =Tag::where('name',$tag)->get('id');
+              $article->tags()->syncWithoutDetaching($tag_id);
+
             }
         }
 
-        $article = Article::find($article->id)->with(['images'])->orderBy('id', 'Desc');
+        $article = Article::find($article->id)->with(['images'])->orderBy('id', 'Desc')->first();
+
 
         return $this->apiResponse(new ArticleResource($article), 'Article created successfully', 201);
     }
@@ -153,9 +150,12 @@ class ArticleController extends Controller
     //restore from trached
     public function restore($id){
 
-
-            $article = Article::onlyTrashed()->where('id' , $id)->first()->restore();
+        $article = Article::onlyTrashed()->where('id' , $id)->first();
+        if ($article){
+            $article->restore();
             return $this->apiResponse(null, 'Article restore successfully', 201);
+        }
+        return $this->apiResponse(null, 'the Article not found in trash', 404);
 
     }
 
@@ -163,12 +163,12 @@ class ArticleController extends Controller
     //delete an article
     public function forceDelete($id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::onlyTrashed()->where('id', $id)->first();
         if ($article) {
 
-            File::delete(public_path() . '/' . $article->article_cover);
-            $article->forcedelete();
+          //  File::delete(public_path() . '/' . $article->article_cover);
             $article->tags()->detach();
+            $article->forcedelete();
             return $this->apiResponse(null, 'the Article deleted successfully', 200);
         }
 
@@ -179,20 +179,18 @@ class ArticleController extends Controller
     //delete Tag from Article
     public function deleteTagFormArticle(Request $request, $id)
     {
-
         $tag_name = $request->tags;
         //store post's tags
         $article = Article::find($id);
-        if ($article) {
-            $i = 0;
+        if ($article->tags) {
             foreach ($article->tags as $tag) {
-                if ($tag->name == $tag_name[$i]) {
+                $tag_id =Tag::where('name',$tag->name)->get('id');
+                if( $tag_id){
                     //detach : delete tag from post
                     $article->tags()->detach($tag->id);
+                    return $this->apiResponse(null, 'the tag deleted successfuly', 200);
                 }
-                $i++;
             }
-            return $this->apiResponse(null, 'the tag deleted successfuly', 200);
         }
         return $this->apiResponse(null, 'the Article not found', 404);
     }
@@ -208,6 +206,14 @@ class ArticleController extends Controller
         return $this->apiResponse(null, 'the Article not found', 404);
     }
 
+    //show all tags
+    public function showTag()
+    {
+
+        $tags = Tag::all();
+        return $this->apiResponse(TagResource::collection($tags), '', 200);
+    }
+
        //search
        public function search($term){
 
@@ -219,4 +225,7 @@ class ArticleController extends Controller
            }
 
     }
+
+
+
 }

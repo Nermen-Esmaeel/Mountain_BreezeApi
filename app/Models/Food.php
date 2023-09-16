@@ -18,8 +18,7 @@ class Food extends Model
     protected $fillable=[
 
         'image',
-        'category_en',
-        'category_ar',
+        'category',
         'title_en',
         'title_ar',
         'content_en',
@@ -35,8 +34,7 @@ class Food extends Model
 
 
         protected $searchable = [
-            'category_en',
-            'category_ar',
+            'category',
             'title_en',
             'title_ar',
             'content_en',

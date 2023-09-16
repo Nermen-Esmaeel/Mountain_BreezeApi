@@ -18,9 +18,7 @@ class FoodSeeder extends Seeder
 
             'image' => 'images/galary/1694375023_tech.png',
 
-            'category_en' => 'Westren Food',
-
-            'category_ar' => 'غربي',
+            'category' => 'Westren Food',
 
             'title_en'   => 'title1' ,
 
@@ -38,13 +36,11 @@ class FoodSeeder extends Seeder
 
             'image' => 'images/galary/1694375023_tech.png',
 
-            'category_en' => 'Oriental Food',
-
-            'category_ar' => 'شرقي',
+            'category' => 'Oriental Food',
 
             'title_en'   => 'title1' ,
 
-            'title_ar'   => 'عنوان1' ,
+            'title_ar'   => 'عنوان1',
 
             'content_en'  => 'Lorem Ipsum giving information on its origins as well as'  ,
 
@@ -58,9 +54,8 @@ class FoodSeeder extends Seeder
 
             'image' => 'images/galary/1694375023_tech.png',
 
-            'category_en' => 'Traditional Food',
+            'category' => 'Traditional Food',
 
-            'category_ar' => 'تقليدي',
 
             'title_en'   => 'title1' ,
 

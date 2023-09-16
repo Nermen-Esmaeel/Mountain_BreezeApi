@@ -29,8 +29,7 @@ class StoreArticle extends FormRequest
         return [
 
             'article_cover' => 'required|image|file',
-            'category_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
-            'category_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'category' => 'required|string|regex:/^[a-zA-Z& ]+$/',
             'title_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
             'title_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
             'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/',
@@ -43,8 +42,7 @@ class StoreArticle extends FormRequest
         return [
 
             'article_cover'       => 'Article cover image field is required!',
-            'category_en.regex'    => 'The category_en must include only english letters. ',
-            'category_ar.regex'    => 'The category_ar must include only arabic letters.',
+            'category.regex'    => 'The category must include only english letters. ',
             'title_en.regex' => 'The title_en must include only english letters.',
             'title_ar.regex' => 'The title_ar must include only arabic letters.',
             'content_en.regex' => 'The content_en must include only english letters.',

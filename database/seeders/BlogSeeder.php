@@ -21,9 +21,8 @@ class BlogSeeder extends Seeder
 
         'article_cover' => 'images/galary/1694375023_tech.png',
 
-        'category_en' => 'Article',
+        'category' => 'Article',
 
-        'category_ar' => 'مقالة',
 
         'title_en'   => 'title1' ,
 
@@ -37,10 +36,10 @@ class BlogSeeder extends Seeder
 
     ]);
 
-        $article->tags()->syncWithoutDetaching([
-            1 ,
-            2
-        ]);
+        // $article->tags()->syncWithoutDetaching([
+        //     1 ,
+        //     2
+        // ]);
 
         Image::create([
             'image_path' => 'images/galary/1694375023_tech.png',
@@ -52,9 +51,7 @@ class BlogSeeder extends Seeder
 
             'article_cover' => 'images/galary/1694375023_tech.png',
 
-            'category_en' => 'Sport',
-
-            'category_ar' => 'رياضة',
+            'category' => 'Sport',
 
             'title_en'   => 'title1' ,
 
@@ -68,10 +65,10 @@ class BlogSeeder extends Seeder
 
         ]);
 
-            $article2->tags()->syncWithoutDetaching([
-                3 ,
-                4
-            ]);
+            // $article2->tags()->syncWithoutDetaching([
+            //     3 ,
+            //     4
+            // ]);
 
             Image::create([
                 'image_path' => 'images/galary/1694375023_tech.png',

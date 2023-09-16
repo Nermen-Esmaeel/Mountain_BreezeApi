@@ -65,11 +65,16 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::group([
         'prefix' => '/article.tags',
     ], function () {
+        Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
+        Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
 
-        Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
-        Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
-        Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
-        Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
+    });
+
+    //Tag Routes
+    Route::group([
+        'prefix' => '/tags',
+    ], function () {
+        Route::get('/', [ArticleController::class, 'showTag']);
     });
 
     //Food Route

@@ -18,10 +18,7 @@ class ArticleResource extends JsonResource
 
             'id' => $this->id,
             'article_cover' => $this->article_cover,
-            'category' => [
-                'en' => $this->category_en,
-                'ar' => $this->category_ar,
-            ],
+            'category' => $this->category,
             'title' => [
                 'en' => $this->title_en,
                 'ar' => $this->title_ar,

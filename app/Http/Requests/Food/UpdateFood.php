@@ -26,8 +26,7 @@ class UpdateFood extends FormRequest
             return [
 
             'image' => 'nullable|image',
-            'category_en' => 'required|in:Westren Food,Oriental Food,Traditional Food',
-            'category_ar' => 'nullable|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
+            'category' => 'nullable|in:Westren Food,Oriental Food,Traditional Food',
             'title_en' => 'nullable|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
             'title_ar' => 'nullable|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
             'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/|max:1500',

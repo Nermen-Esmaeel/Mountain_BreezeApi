@@ -32,15 +32,17 @@ class DatabaseSeeder extends Seeder
         for ($i = 0; $i < 7; $i++){
             $this->call([
                 BookSeeder::class,
-                FoodSeeder::class,
                 Contact_asSeeder::class,
-                TagSeeder::class,
+                FoodSeeder::class,
                 BlogSeeder::class,
                 RoomSeeder::class,
                 GallarySeeder::class,
                 VideoSeeder::class,
                 ExploreSeeder::class,
             ]);
-    }
+        }
+        $this->call(TagSeeder::class);
+
+
     }
 }
