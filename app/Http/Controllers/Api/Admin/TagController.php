@@ -20,24 +20,22 @@ class TagController extends Controller
         return $this->apiResponse(TagResource::collection($tags), '', 200);
     }
 
-       //store a tags
-       public function store(Request $request)
-       {
+    //store a tags
+    public function store(Request $request)
+    {
 
         $validate = $this->validate($request, [
-                'name' => 'required',
-            ]);
+            'name' => 'required',
+        ]);
 
-            $input = $request->input();
-            $tag = Tag::create([
-                'name' =>  $input['name'],
-            ]);
-            $tag->save();
+        $tag = Tag::create([
+            'name' =>  $request->name,
+        ]);
+        $tag->save();
 
-            $tag = Tag::find($tag->id)->orderBy('id', 'Desc')->first();
-            return $this->apiResponse(new TagResource($article), 'tag created successfully', 201);
-
-       }
+        $tag = Tag::find($tag->id)->orderBy('id', 'Desc')->first();
+        return $this->apiResponse(new TagResource($tag), 'tag created successfully', 201);
+    }
 
     //update an tag
     public function update(Request $request, $id)
@@ -58,17 +56,16 @@ class TagController extends Controller
     }
 
 
-      //delete a tag
-      public function destroy($id)
-      {
-          $tag = tag::find($id);
-          if($tag) {
+    //delete a tag
+    public function destroy($id)
+    {
+        $tag = tag::find($id);
+        if ($tag) {
 
-              $tag->delete($id);
-              return $this->apiResponse(null, ' tag deleted successfully', 200);
-          }
+            $tag->delete($id);
+            return $this->apiResponse(null, ' tag deleted successfully', 200);
+        }
 
-          return $this->apiResponse(null, ' tag not found', 404);
-
-      }
+        return $this->apiResponse(null, ' tag not found', 404);
+    }
 }

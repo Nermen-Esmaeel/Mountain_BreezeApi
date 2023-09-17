@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\{Article, Image, Tag};
 use App\Http\Resources\CategoryResource;
 use App\Traits\{UploadFile, ApiResponseTrait};
-use App\Http\Resources\{ArticleResource,TagResource};
+use App\Http\Resources\{ArticleResource, TagResource};
 use App\Http\Requests\Article\{StoreArticle, UpdateArticle};
 
 
@@ -22,14 +22,13 @@ class ArticleController extends Controller
 
 
         $articles = Article::query();
-        if($request->category){
-             $articles->where('category', $request->category );
-            }
-        if($request->date){
+        if ($request->category) {
+            $articles->where('category', $request->category);
+        }
+        if ($request->date) {
             $articles->where('date', $request->date);
         }
-         return $this->apiResponse(ArticleResource::collection($articles->with(['tags' , 'images'])->get()), '', 200);
-
+        return $this->apiResponse(ArticleResource::collection($articles->with(['tags', 'images'])->get()), '', 200);
     }
 
     //show one article
@@ -40,7 +39,7 @@ class ArticleController extends Controller
         //fetch  post from database and store in $posts
         if ($article) {
 
-            $article = Article::query()->where('id', '=', $id)->with(['tags' , 'images'])->first();
+            $article = Article::query()->where('id', '=', $id)->with(['tags', 'images'])->first();
 
             return $this->apiResponse(new ArticleResource($article), 'ok', 200);
         }
@@ -60,14 +59,14 @@ class ArticleController extends Controller
 
         $article = Article::create([
             'article_cover' =>  $path,
-            'category' =>  $input['category'],
-            'title_en' => $input['title_en'],
-            'title_ar' =>  $input['title_ar'],
-            'sub_title_en' => $input['sub_title_en'],
-            'sub_title_ar' =>  $input['sub_title_ar'],
-            'content_en' =>  $input['content_en'],
-            'content_ar' =>  $input['content_ar'],
-            'date' =>  $input['date'],
+            'category' =>  $request->category,
+            'title_en' => $request->title_en,
+            'title_ar' =>  $request->title_ar,
+            'sub_title_en' => $request->sub_title_en,
+            'sub_title_ar' =>  $request->sub_title_ar,
+            'content_en' =>  $request->content_en,
+            'content_ar' =>  $request->content_ar,
+            'date' =>  $request->date,
 
         ]);
 
@@ -87,9 +86,8 @@ class ArticleController extends Controller
         //add tags for Article table
         if ($tags = $request->tags) {
             foreach ($tags as $tag) {
-                $tag_id =Tag::where('name',$tag)->get('id');
-              $article->tags()->syncWithoutDetaching($tag_id);
-
+                $tag_id = Tag::where('name', $tag)->get('id');
+                $article->tags()->syncWithoutDetaching($tag_id);
             }
         }
 
@@ -116,6 +114,17 @@ class ArticleController extends Controller
                     'article_cover' => $path,
                 ]);
             }
+
+
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $filename = time() . '_' . $image->getClientOriginalName();
+                    $path = $image->storeAs('images/article', $filename);
+                    $article->images()->update([
+                        'image_path' => $path
+                    ]);
+                }
+            }
             return $this->apiResponse(new ArticleResource($article), 'the article updated successfully ', 201);
         }
         return $this->apiResponse(null, 'the article not found', 404);
@@ -138,26 +147,27 @@ class ArticleController extends Controller
 
 
     //show trash
-    public function trash(){
+    public function trash()
+    {
 
-            $articles = ArticleResource::collection(Article::onlyTrashed()->orderBy('deleted_at', 'desc')->get());
-            if ($articles) {
-                return $this->apiResponse($articles, null , 200);
-            }
-            return $this->apiResponse(null, 'No Articles in Trash', 404);
+        $articles = ArticleResource::collection(Article::onlyTrashed()->orderBy('deleted_at', 'desc')->get());
+        if ($articles) {
+            return $this->apiResponse($articles, null, 200);
+        }
+        return $this->apiResponse(null, 'No Articles in Trash', 404);
     }
 
 
     //restore from trached
-    public function restore($id){
+    public function restore($id)
+    {
 
-        $article = Article::onlyTrashed()->where('id' , $id)->first();
-        if ($article){
+        $article = Article::onlyTrashed()->where('id', $id)->first();
+        if ($article) {
             $article->restore();
             return $this->apiResponse(null, 'Article restore successfully', 201);
         }
         return $this->apiResponse(null, 'the Article not found in trash', 404);
-
     }
 
 
@@ -167,7 +177,7 @@ class ArticleController extends Controller
         $article = Article::onlyTrashed()->where('id', $id)->first();
         if ($article) {
 
-          //  File::delete(public_path() . '/' . $article->article_cover);
+            //  File::delete(public_path() . '/' . $article->article_cover);
             $article->tags()->detach();
             $article->forcedelete();
             return $this->apiResponse(null, 'the Article deleted successfully', 200);
@@ -185,8 +195,8 @@ class ArticleController extends Controller
         $article = Article::find($id);
         if ($article->tags) {
             foreach ($article->tags as $tag) {
-                $tag_id =Tag::where('name',$tag->name)->get('id');
-                if( $tag_id){
+                $tag_id = Tag::where('name', $tag->name)->get('id');
+                if ($tag_id) {
                     //detach : delete tag from post
                     $article->tags()->detach($tag->id);
                     return $this->apiResponse(null, 'the tag deleted successfuly', 200);
@@ -208,26 +218,22 @@ class ArticleController extends Controller
     }
 
 
-       //search
-       public function search($term){
+    //search
+    public function search($term)
+    {
 
         $articles = Article::search($term)->get();
-        if(count($articles)){
+        if (count($articles)) {
             return $this->apiResponse($articles, 'ok', 200);
-           }else{
-            return $this->apiResponse(null, 'There is no Article  like '.$term , 404);
-           }
+        } else {
+            return $this->apiResponse(null, 'There is no Article  like ' . $term, 404);
         }
-        //show all category
-        public function getCategory()
-        {
-            //return catagories in array
-            $categories =  Article::groupBy('category')->pluck('category')->toArray();
-            return $this->apiResponse($categories, '', 200);
     }
-
+    //show all category
+    public function getCategory()
+    {
+        //return catagories in array
+        $categories =  Article::groupBy('category')->pluck('category')->toArray();
+        return $this->apiResponse($categories, '', 200);
     }
-
-
-
-
+}

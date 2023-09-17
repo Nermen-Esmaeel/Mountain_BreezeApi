@@ -78,12 +78,10 @@ class ExploreController extends Controller
         //add tags for Explore table
         if ($tags = $request->tags) {
             foreach ($tags as $tag) {
-                $tag_id =Tag::where('name',$tag)->get('id');
-              $explore->tags()->syncWithoutDetaching($tag_id);
-
+                $tag_id = Tag::where('name', $tag)->get('id');
+                $explore->tags()->syncWithoutDetaching($tag_id);
             }
         }
-
         return new ExploreResource($explore);
     }
 

@@ -21,10 +21,10 @@ class FoodController extends Controller
     public function index(Request $request)
     {
 
-       $foods = Food::query();
-       if($request->category){
-            $foods->where('category', $request->category );
-           }
+        $foods = Food::query();
+        if ($request->category) {
+            $foods->where('category', $request->category);
+        }
 
         return $this->apiResponse(FoodResource::collection($foods->get()), '', 200);
     }
@@ -47,7 +47,7 @@ class FoodController extends Controller
 
         $input = $request->input();
         if ($request->hasFile('image')) {
-            $path = $this->UploadFile('Foods' , $request->file('image'));
+            $path = $this->UploadFile('Foods', $request->file('image'));
         }
         $food = Food::create([
 
@@ -61,7 +61,7 @@ class FoodController extends Controller
         if ($request->image) {
 
             $food->update([
-                'image' => $path ,
+                'image' => $path,
                 'image_size' =>  $input['image_size'],
             ]);
         }
@@ -88,7 +88,7 @@ class FoodController extends Controller
                 File::delete(public_path() . '/' . $food->image);
                 $food->update([
                     'image' => $path,
-                    'image_size' =>  $input['image_size'],
+                    'image_size' =>  $request->image_size,
                 ]);
             }
             return $this->apiResponse($food, 'the food updated successfully ', 201);
@@ -114,23 +114,24 @@ class FoodController extends Controller
 
 
     //show trash
-    public function trash(){
+    public function trash()
+    {
 
-            $foods = Food::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
-            if ($foods) {
-                return $this->apiResponse($foods, null , 200);
-            }
-            return $this->apiResponse(null, 'No Foods in Trash', 404);
+        $foods = Food::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+        if ($foods) {
+            return $this->apiResponse($foods, null, 200);
+        }
+        return $this->apiResponse(null, 'No Foods in Trash', 404);
     }
 
 
     //restore from trached
-    public function restore($id){
+    public function restore($id)
+    {
 
 
-            $food = Food::onlyTrashed()->where('id' , $id)->first()->restore();
-            return $this->apiResponse(null, 'Food restore successfully', 201);
-
+        $food = Food::onlyTrashed()->where('id', $id)->first()->restore();
+        return $this->apiResponse(null, 'Food restore successfully', 201);
     }
 
 
@@ -141,7 +142,7 @@ class FoodController extends Controller
 
         if ($food) {
 
-           File::delete(public_path() . '/' . $food->image);
+            File::delete(public_path() . '/' . $food->image);
             $food->forcedelete();
             return $this->apiResponse(null, 'the food deleted successfully', 200);
         }
@@ -150,15 +151,14 @@ class FoodController extends Controller
     }
 
     //search
-    public function search($term){
+    public function search($term)
+    {
 
         $foods = Food::search($term)->get();
-        if(count($foods)){
+        if (count($foods)) {
             return $this->apiResponse($foods, 'ok', 200);
-           }else{
-            return $this->apiResponse(null, 'There is no Food  like '.$term , 404);
-           }
-
+        } else {
+            return $this->apiResponse(null, 'There is no Food  like ' . $term, 404);
+        }
     }
-
 }

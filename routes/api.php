@@ -37,7 +37,7 @@ Route::controller(AuthController::class)->group(function () {
 //start perfix dashboard
 Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
-    //Article Route
+    //Blog Article Route
     Route::group([
         'prefix' => '/articles',
     ], function () {
@@ -69,7 +69,6 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     ], function () {
         Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
         Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
-
     });
 
     //Tag Routes
@@ -114,37 +113,40 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::post('/', [BookController::class, 'store'])->withoutMiddleware(['auth:api']);
     });
 
-
-
-    //Room Soft delete
-
-    //soft delete
-    Route::get('rooms/softDelete/{id}', [RoomController::class, 'SoftDelete']);
-
-    //show trash
-    Route::get('rooms/show/Trashed', [RoomController::class, 'trash']);
-
-    //restore
-    Route::get('rooms/trash/restore/{id}', [RoomController::class, 'restore']);
-
-
-
-      //gallary
-      Route::post('gallary', [GallaryController::class, 'store']);
-      Route::get('gallary', [GallaryController::class, 'index'])->withoutMiddleware(['auth:api']);
+    //gallary/images
+    Route::post('gallary', [GallaryController::class, 'store']);
+    Route::get('gallary', [GallaryController::class, 'index'])->withoutMiddleware(['auth:api']);
 
     //video
     Route::post('videos', [VideoController::class, 'store']);
     Route::get('videos', [VideoController::class, 'index'])->withoutMiddleware(['auth:api']);
 
-    //explore
-    Route::get('explores/article', [ExploreController::class, 'index'])->withoutMiddleware(['auth:api']);
+
+    //Rooms
+    Route::get('rooms', [RoomController::class, 'index'])->withoutMiddleware(['auth:api']);
+    Route::post('rooms', [RoomController::class, 'store']);
+    Route::post('rooms/{room}', [RoomController::class, 'update']);
+    Route::get('rooms/{room}', [RoomController::class, 'show'])->withoutMiddleware(['auth:api']);;
+    Route::delete('rooms/{room}', [RoomController::class, 'destroy']);
+    //soft delete
+    Route::get('rooms/softDelete/{id}', [RoomController::class, 'SoftDelete']);
+    //show trash
+    Route::get('rooms/show/Trashed', [RoomController::class, 'trash']);
+    //restore
+    Route::get('rooms/trash/restore/{id}', [RoomController::class, 'restore']);
 
 
+    //Explore
+    Route::get('explores', [ExploreController::class, 'index'])->withoutMiddleware(['auth:api']);;
+    Route::post('explores', [ExploreController::class, 'store']);
+    Route::post('explores/{explore}', [ExploreController::class, 'update']);
+    Route::get('explores/{explore}', [ExploreController::class, 'show'])->withoutMiddleware(['auth:api']);;
+    Route::delete('explores/{explore}', [ExploreController::class, 'destroy']);
+
+    Route::get('explores/article.tags/{id}', [ExploreController::class, 'showArticleTag'])->withoutMiddleware(['auth:api']);;
 
 
-
-    //Food Route
+    //contact us Route
     Route::group([
         'prefix' => '/contact',
     ], function () {
@@ -165,32 +167,3 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::delete('/{id}', [MessageController::class, 'forceDelete']);
     });
 });
-
-
-
-    Route::prefix('dashboard')->group(function () {
-
-        //Rooms
-        Route::get('rooms', [RoomController::class, 'index']);
-        Route::post('rooms', [RoomController::class, 'store']);
-        Route::post('rooms/{room}', [RoomController::class, 'update']);
-        Route::get('rooms/{room}', [RoomController::class, 'show']);
-        Route::delete('rooms/{room}', [RoomController::class, 'destroy']);
-
-
-        //Explore
-        Route::get('explores', [ExploreController::class, 'index']);
-        Route::post('explores', [ExploreController::class, 'store']);
-        Route::post('explores/{explore}', [ExploreController::class, 'update']);
-        Route::get('explores/{explore}', [ExploreController::class, 'show']);
-        Route::delete('explores/{explore}', [ExploreController::class, 'destroy']);
-
-        Route::get('explores/article.tags/{id}', [ExploreController::class, 'showArticleTag']);
-
-
-});
-
-
-
-
-

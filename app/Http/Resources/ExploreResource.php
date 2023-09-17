@@ -20,18 +20,14 @@ class ExploreResource extends JsonResource
                 'en' => $this->title_en,
                 'ar' => $this->title_ar,
             ],
-            'sub_title' => [
-                'en' => $this->sub_title_en,
-                'ar' => $this->sub_title_ar,
-            ],
             'description' => [
                 'en' => $this->content_en,
                 'ar' => $this->content_ar,
             ],
-            'category' => $this->category,
+            'tags' => $this->tags,
             'date' => $this->date,
-            'video' => $this->video,
-            'images' => ImageResource::collection($this->images)
+            'section' => $this->section
+
         ];
     }
 }
