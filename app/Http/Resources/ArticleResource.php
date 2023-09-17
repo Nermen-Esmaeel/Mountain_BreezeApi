@@ -23,7 +23,10 @@ class ArticleResource extends JsonResource
                 'en' => $this->title_en,
                 'ar' => $this->title_ar,
             ],
-
+            'sub_title' => [
+                'en' => $this->sub_title_en,
+                'ar' => $this->sub_title_ar,
+            ],
             'content' => [
                 'en' => $this->content_en,
                 'ar' => $this->content_ar,

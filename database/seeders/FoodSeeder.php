@@ -16,7 +16,7 @@ class FoodSeeder extends Seeder
     {
         Food::create([
 
-            'image' => 'images/galary/1694375023_tech.png',
+            'image' => 'images/gallary/1694375023_tech.png',
 
             'category' => 'Westren Food',
 
@@ -34,7 +34,7 @@ class FoodSeeder extends Seeder
 
         Food::create([
 
-            'image' => 'images/galary/1694375023_tech.png',
+            'image' => 'images/gallary/1694375023_tech.png',
 
             'category' => 'Oriental Food',
 
@@ -52,7 +52,7 @@ class FoodSeeder extends Seeder
 
         Food::create([
 
-            'image' => 'images/galary/1694375023_tech.png',
+            'image' => 'images/gallary/1694375023_tech.png',
 
             'category' => 'Traditional Food',
 

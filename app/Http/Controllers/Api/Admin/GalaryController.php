@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Galary\StoreRequest;
+use App\Http\Requests\Gallary\StoreRequest;
 use App\Http\Requests\Videos\StoreRequest as VideosStoreRequest;
-use App\Http\Resources\GalaryResource;
+use App\Http\Resources\GallaryResource;
 use App\Http\Resources\VideoResource;
-use App\Models\Galary;
+use App\Models\Gallary;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class GalaryController extends Controller
+class GallaryController extends Controller
 {
     public function index(Request $request)
     {
@@ -28,33 +28,33 @@ class GalaryController extends Controller
             ], 422);
         }
 
-        $imageQuery = Galary::query();
+        $imageQuery = Gallary::query();
 
         if ($request->type) {
             $imageQuery = $imageQuery->where('type', 'LIKE', '%' . $request->type . '%');
         }
-        return GalaryResource::collection($imageQuery->get());
+        return GallaryResource::collection($imageQuery->get());
     }
 
     public function store(StoreRequest $request)
     {
         $request->validated();
 
-        $galary = Galary::create([
+        $gallary = Gallary::create([
             'type' => $request->type,
         ]);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = time() . '_' . $image->getClientOriginalName();
-                $path = $image->storeAs('images/galary', $filename);
+                $path = $image->storeAs('images/gallary', $filename);
 
-                $galary->images()->create([
+                $gallary->images()->create([
                     'image_path' => $path,
                 ]);
             }
         }
 
-        return new GalaryResource($galary);
+        return new GallaryResource($gallary);
     }
 }

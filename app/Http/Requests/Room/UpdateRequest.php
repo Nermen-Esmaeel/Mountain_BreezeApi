@@ -15,8 +15,10 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_en' => 'string',
-            'name_ar' => 'string',
+            'title_en' => 'string',
+            'title_ar' => 'string',
+            'sub_title_en' => 'string',
+            'sub_title_ar' => 'string',
             'type' => 'string',
             'guests_number' => 'integer',
             'price' => 'numeric',

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Explore\StoreRequest;
-use App\Http\Requests\Explore\UpdateRequest;
-use App\Http\Resources\ExploreResource;
+use App\Models\Tag;
 use App\Models\Explore;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ExploreResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use SebastianBergmann\Exporter\Exporter;
+use App\Http\Requests\Explore\StoreRequest;
+use App\Http\Requests\Explore\UpdateRequest;
 
 class ExploreController extends Controller
 {
@@ -18,7 +18,7 @@ class ExploreController extends Controller
     public function index(Request $request)
     {
         $rules = [
-            'tags' => 'in:Events,Nature,Activity,Chalet,Restaurant,Pool',
+            'category' => 'in:Events,Nature,Activity,Chalet,Restaurant,Pool',
         ];
 
         $validator = Validator::make($request->query(), $rules);
@@ -31,8 +31,8 @@ class ExploreController extends Controller
 
         $exploreQuery = Explore::query();
 
-        if ($request->tags) {
-            $exploreQuery = $exploreQuery->where('tags', 'LIKE', '%' . $request->tags . '%');
+        if ($request->category) {
+            $exploreQuery = $exploreQuery->where('category', 'LIKE', '%' . $request->category . '%');
         }
         return ExploreResource::collection($exploreQuery->get());
     }
@@ -45,24 +45,44 @@ class ExploreController extends Controller
         if ($request->hasFile('article_cover') && $request->file('article_cover')->isValid()) {
             $image = $request->file('article_cover');
             $imageName = time() . '_' . $image->getClientOriginalName();
-            $path =  $image->storeAs('images/explore', $imageName, 'public');
+            $cover =  $image->storeAs('images/explore', $imageName, 'public');
         }
 
         $explore = Explore::create([
-            'article_cover' =>  $path,
-            'tags' =>  $request->tags,
+            'article_cover' =>  $cover,
+            'category' =>  $request->category,
             'title_en' => $request->title_en,
             'title_ar' =>  $request->title_ar,
+            'sub_title_en' => $request->sub_title_en,
+            'sub_title_ar' =>  $request->sub_title_ar,
             'content_en' =>  $request->content_en,
             'content_ar' =>  $request->content_ar,
             'date' => $request->date,
+            'video' => $request->video
         ]);
 
-        if ($request->has('tags') && $request->input('tags') === 'Events') {
-            $explore->section = $request->input('section');
-        }
 
-        $explore->save();
+        if ($request->hasFile('images')) {
+
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $filename = time() . '_' . $image->getClientOriginalName();
+                    $path = $image->storeAs('images/explore', $filename);
+
+                    $explore->images()->create([
+                        'image_path' => $path,
+                    ]);
+                }
+            }
+        }
+        //add tags for Explore table
+        if ($tags = $request->tags) {
+            foreach ($tags as $tag) {
+                $tag_id =Tag::where('name',$tag)->get('id');
+              $explore->tags()->syncWithoutDetaching($tag_id);
+
+            }
+        }
 
         return new ExploreResource($explore);
     }
@@ -87,8 +107,19 @@ class ExploreController extends Controller
             $path = $newImage->storeAs('images/explore', $newImageName, 'public');
             $data['article_cover'] = $path;
         }
-        $explore->update($data);
 
+
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $filename = time() . '_' . $image->getClientOriginalName();
+                $path = $image->storeAs('images/explore', $filename);
+                $explore->images()->update([
+                    'image_path' => $path
+                ]);
+            }
+        }
+        $explore->update($data);
         return new ExploreResource($explore);
     }
 
@@ -108,5 +139,19 @@ class ExploreController extends Controller
                 'message' => 'Invalid ID!',
             ], 404);
         }
+    }
+
+
+    //show tags for Article
+    public function showArticleTag($id)
+    {
+
+        $explore = Explore::find($id);
+        if ($explore) {
+            return  $explore->load('tags');
+        }
+        return response()->json([
+            'message' => 'Invalid ID!',
+        ], 404);
     }
 }

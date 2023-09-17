@@ -28,9 +28,12 @@ class Image extends Model
     }
 
 
-    public function galary(): BelongsTo
+    public function gallary(): BelongsTo
     {
-        return $this->belongsTo(Galary::class);
+        return $this->belongsTo(Gallary::class);
     }
-
+    public function explore(): BelongsTo
+    {
+        return $this->belongsTo(Explore::class);
+    }
 }

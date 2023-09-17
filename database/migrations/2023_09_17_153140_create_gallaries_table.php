@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('galaries', function (Blueprint $table) {
+        Schema::create('gallaries', function (Blueprint $table) {
             $table->id();
-            $table->enum('type',['Restaurant','Chalet','Activity','Nature','Events']);
+            $table->enum('type', ['Restaurant', 'Chalet', 'Activity', 'Nature', 'Events']);
             $table->softDeletes();
             $table->timestamps();
         });

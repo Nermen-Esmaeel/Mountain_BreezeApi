@@ -15,8 +15,10 @@ class Room extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'name_ar',
-        'name_en',
+        'title_ar',
+        'title_en',
+        'sub_title_ar',
+        'sub_title_en',
         'type',
         'guests_number',
         'price',

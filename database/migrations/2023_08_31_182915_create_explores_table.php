@@ -14,14 +14,16 @@ return new class extends Migration
         Schema::create('explores', function (Blueprint $table) {
             $table->id();
             $table->string('article_cover');
-            $table->enum('tags', ['Restaurant', 'Chalet', 'Activity', 'Nature', 'Pool', 'Events']);
+            $table->enum('category', ['Restaurant', 'Chalet', 'Activity', 'Nature', 'Pool', 'Events']);
             $table->string('title_en');
             $table->string('title_ar');
-            $table->datetime('section')->nullable();
+            $table->string('sub_title_en');
+            $table->string('sub_title_ar');
             $table->longText('content_en')->nullable();
             $table->longText('content_ar')->nullable();
+            $table->string('video')->nullable();
             $table->string('date')->nullable();
-              $table->softDeletes();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

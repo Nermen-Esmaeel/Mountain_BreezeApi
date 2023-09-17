@@ -25,7 +25,8 @@ class RoomController extends Controller
             'type' => 'string',
             'guests_number' => 'integer',
             'min_price' => 'numeric',
-            'max_price' => 'numeric'
+            'max_price' => 'numeric',
+            'floor' => 'integer'
         ];
 
         $validator = Validator::make($request->query(), $rules);
@@ -43,6 +44,9 @@ class RoomController extends Controller
         if ($request->guests_number) {
             $rooms->where('guests_number', '=', $request->guests_number);
         }
+        if ($request->floor) {
+            $rooms->where('floor', '=', $request->floor);
+        }
         if ($request->min_price) {
             $rooms->where('price', '>=', $request->min_price);
         } elseif ($request->max_price) {
@@ -58,8 +62,10 @@ class RoomController extends Controller
         $request->validated();
 
         $room = Room::create([
-            'name_en' => $request->name_en,
-            'name_ar' => $request->name_ar,
+            'title_en' => $request->title_en,
+            'title_ar' => $request->title_ar,
+            'sub_title_en' => $request->sub_title_en,
+            'sub_title_ar' => $request->sub_title_ar,
             'type' => $request->type,
             'guests_number' => $request->guests_number,
             'price' => $request->price,
@@ -99,13 +105,11 @@ class RoomController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                Storage::disk('public')->delete('Rooms/' . $image->image);
                 $filename = time() . '_' . $image->getClientOriginalName();
-
-                $path =  $image->storeAs('images/rooms', $filename);
-
-                $newImage = new Image(['image_path' => $path]);
-                $room->images()->save($newImage);
+                $path = $image->storeAs('images/rooms', $filename);
+                $room->images()->update([
+                    'image_path' => $path
+                ]);
             }
         }
 
@@ -163,7 +167,7 @@ class RoomController extends Controller
 
     public function destroy(Room $room)
     {
-        Room::onlyTrashed()->where('id', $id);
+        Room::findOrFail($room->id);
         if ($room) {
             $room->forcedelete();
             return response()->json([

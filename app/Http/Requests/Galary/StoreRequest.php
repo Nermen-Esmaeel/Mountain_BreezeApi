@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Galary;
+namespace App\Http\Requests\Gallary;
 
 use Illuminate\Foundation\Http\FormRequest;
 

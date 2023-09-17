@@ -19,7 +19,7 @@ class BlogSeeder extends Seeder
 
        $article =  Article::create([
 
-        'article_cover' => 'images/galary/1694375023_tech.png',
+        'article_cover' => 'images/gallary/1694375023_tech.png',
 
         'category' => 'Article',
 
@@ -27,6 +27,12 @@ class BlogSeeder extends Seeder
         'title_en'   => 'title1' ,
 
         'title_ar'   => 'عنوان1' ,
+
+
+        'sub_title_en'   => 'sub title1',
+
+        'sub_title_ar'   => '1عنوان فرعي ',
+
 
         'content_en'  => 'Lorem Ipsum giving information on its origins as well as'  ,
 
@@ -42,20 +48,24 @@ class BlogSeeder extends Seeder
         // ]);
 
         Image::create([
-            'image_path' => 'images/galary/1694375023_tech.png',
+            'image_path' => 'images/gallary/1694375023_tech.png',
             'imageable_type' => Article::class,
             'imageable_id' => $article->id,
         ]);
 
         $article2 =  Article::create([
 
-            'article_cover' => 'images/galary/1694375023_tech.png',
+            'article_cover' => 'images/gallary/1694375023_tech.png',
 
             'category' => 'Sport',
 
-            'title_en'   => 'title1' ,
+            'title_en'   => 'title2' ,
 
-            'title_ar'   => 'عنوان1' ,
+            'title_ar'   => 'عنوان2' ,
+
+            'sub_title_en'   => 'sub title2',
+
+            'sub_title_ar'   => '2عنوان فرعي ',
 
             'content_en'  => 'Lorem Ipsum giving information on its origins as well as'  ,
 
@@ -71,7 +81,7 @@ class BlogSeeder extends Seeder
             // ]);
 
             Image::create([
-                'image_path' => 'images/galary/1694375023_tech.png',
+                'image_path' => 'images/gallary/1694375023_tech.png',
                 'imageable_type' => Article::class,
                 'imageable_id' => $article2->id,
             ]);

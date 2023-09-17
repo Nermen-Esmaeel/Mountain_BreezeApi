@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\ExploreController;
-use App\Http\Controllers\Api\Admin\GalaryController;
-use App\Http\Controllers\Api\Admin\RoomController;
-
-
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Admin\ArticleController;
-use App\Http\Controllers\Api\Admin\FoodController;
-use App\Http\Controllers\Api\Admin\BookController;
-use App\Http\Controllers\Api\Admin\MessageController;
-use App\Http\Controllers\Api\Admin\VideoController;
+use App\Http\Controllers\Api\Admin\TagController;
 use App\Http\Controllers\Api\Auth\AuthController;
+
+
+use App\Http\Controllers\Api\Admin\BookController;
+use App\Http\Controllers\Api\Admin\FoodController;
+use App\Http\Controllers\Api\Admin\RoomController;
+use App\Http\Controllers\Api\Admin\VideoController;
+use App\Http\Controllers\Api\Admin\GallaryController;
+use App\Http\Controllers\Api\Admin\ArticleController;
+use App\Http\Controllers\Api\Admin\ExploreController;
+use App\Http\Controllers\Api\Admin\MessageController;
 
 
 /*
@@ -41,6 +42,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         'prefix' => '/articles',
     ], function () {
         Route::get('/', [ArticleController::class, 'index'])->withoutMiddleware(['auth:api']);
+        Route::get('category/', [ArticleController::class, 'getCategory'])->withoutMiddleware(['auth:api']);
         Route::get('/{id}', [ArticleController::class, 'show'])->withoutMiddleware(['auth:api']);
         Route::post('/', [ArticleController::class, 'store']);
         Route::post('/{id}', [ArticleController::class, 'update']);
@@ -74,7 +76,10 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::group([
         'prefix' => '/tags',
     ], function () {
-        Route::get('/', [ArticleController::class, 'showTag']);
+        Route::get('/', [TagController::class, 'index']);
+        Route::post('/', [TagController::class, 'store']);
+        Route::post('/{id}', [TagController::class, 'update']);
+        Route::delete('/{id}', [TagController::class, 'destroy']);
     });
 
     //Food Route
@@ -124,9 +129,9 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 
 
-    //Galary
-    Route::post('galary', [GalaryController::class, 'store']);
-    Route::get('galary', [GalaryController::class, 'index'])->withoutMiddleware(['auth:api']);
+      //gallary
+      Route::post('gallary', [GallaryController::class, 'store']);
+      Route::get('gallary', [GallaryController::class, 'index'])->withoutMiddleware(['auth:api']);
 
     //video
     Route::post('videos', [VideoController::class, 'store']);
@@ -161,11 +166,31 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     });
 });
 
-Route::prefix('dashboard')->group(function () {
 
-    //Rooms
-    Route::resource('rooms', RoomController::class);
 
-    //Explore
-    Route::resource('explores', ExploreController::class);
+    Route::prefix('dashboard')->group(function () {
+
+        //Rooms
+        Route::get('rooms', [RoomController::class, 'index']);
+        Route::post('rooms', [RoomController::class, 'store']);
+        Route::post('rooms/{room}', [RoomController::class, 'update']);
+        Route::get('rooms/{room}', [RoomController::class, 'show']);
+        Route::delete('rooms/{room}', [RoomController::class, 'destroy']);
+
+
+        //Explore
+        Route::get('explores', [ExploreController::class, 'index']);
+        Route::post('explores', [ExploreController::class, 'store']);
+        Route::post('explores/{explore}', [ExploreController::class, 'update']);
+        Route::get('explores/{explore}', [ExploreController::class, 'show']);
+        Route::delete('explores/{explore}', [ExploreController::class, 'destroy']);
+
+        Route::get('explores/article.tags/{id}', [ExploreController::class, 'showArticleTag']);
+
+
 });
+
+
+
+
+

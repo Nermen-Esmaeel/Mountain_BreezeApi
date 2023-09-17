@@ -29,6 +29,8 @@ class UpdateArticle extends FormRequest
             'category' => 'nullable|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
             'title_en' => 'nullable|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
             'title_ar' => 'nullable|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
+            'sub_title_en' => 'string',
+            'sub_title_ar' => 'string',
             'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/|max:1500',
             'content_ar' => 'nullable|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
             'date'     => 'nullable'

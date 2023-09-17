@@ -32,6 +32,8 @@ class StoreArticle extends FormRequest
             'category' => 'required|string|regex:/^[a-zA-Z& ]+$/',
             'title_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
             'title_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'sub_title_en' => 'required|string',
+            'sub_title_ar' => 'required|string',
             'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/',
             'content_ar' => 'nullable|string|regex:/^[\p{Arabic} ]+$/u',
             'date'     => 'nullable|date'

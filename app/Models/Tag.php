@@ -30,4 +30,9 @@ class Tag extends Model
     {
         return $this->belongsToMany(Article::class, 'articles_tags', 'tag_id', 'article_id');
     }
+
+    public function explores(): BelongsToMany
+    {
+        return $this->belongsToMany(Explore::class, 'explores_tags', 'tag_id', 'explore_id');
+    }
 }

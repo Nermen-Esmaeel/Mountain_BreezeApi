@@ -15,8 +15,10 @@ class RoomSeeder extends Seeder
     public function run(): void
     {
         $room = Room::create([
-            'name_en' => 'Duplex Room',
-            'name_ar' => 'غرفة مزدوجة',
+            'title_en' => 'Duplex Room',
+            'title_ar' => 'غرفة مزدوجة',
+            'sub_title_en' => 'Suitable for families',
+            'sub_title_ar' => 'مناسب للعائلات',
             'type' => 'VIP',
             'guests_number' => '3',
             'price' => '90',
@@ -28,13 +30,15 @@ class RoomSeeder extends Seeder
             'TV' => 1
         ]);
         Image::create([
-            'image_path' => 'images/galary/1694375023_tech.png',
+            'image_path' => 'images/gallary/1694375023_tech.png',
             'imageable_type' => Room::class,
             'imageable_id' => $room->id,
         ]);
         $room1 = Room::create([
-            'name_en' => 'Duplex Room',
-            'name_ar' => 'غرفة مزدوجة',
+            'title_en' => 'Duplex Room',
+            'title_ar' => 'غرفة مزدوجة',
+            'sub_title_en' => 'Suitable for families',
+            'sub_title_ar' => 'مناسب للعائلات',
             'type' => 'VIP',
             'guests_number' => '2',
             'price' => '50',
@@ -46,13 +50,15 @@ class RoomSeeder extends Seeder
             'TV' => 1
         ]);
         Image::create([
-            'image_path' => 'images/galary/1694375023_tech.png',
+            'image_path' => 'images/gallary/1694375023_tech.png',
             'imageable_type' => Room::class,
             'imageable_id' => $room1->id,
         ]);
         $room2 = Room::create([
-            'name_en' => 'Duplex Room',
-            'name_ar' => 'غرفة مزدوجة',
+            'title_en' => 'Duplex Room',
+            'title_ar' => 'غرفة مزدوجة',
+            'sub_title_en' => 'Suitable for families',
+            'sub_title_ar' => 'مناسب للعائلات',
             'type' => 'VIP',
             'guests_number' => '3',
             'price' => '190',
@@ -64,13 +70,15 @@ class RoomSeeder extends Seeder
             'TV' => 1
         ]);
         Image::create([
-            'image_path' => 'images/galary/1694375023_tech.png',
+            'image_path' => 'images/gallary/1694375023_tech.png',
             'imageable_type' => Room::class,
             'imageable_id' => $room2->id,
         ]);
         $room3 = Room::create([
-            'name_en' => 'Duplex Room',
-            'name_ar' => 'غرفة مزدوجة',
+            'title_en' => 'Duplex Room',
+            'title_ar' => 'غرفة مزدوجة',
+            'sub_title_en' => 'Suitable for families',
+            'sub_title_ar' => 'مناسب للعائلات',
             'type' => 'VIP',
             'guests_number' => '3',
             'price' => '90',
@@ -82,7 +90,7 @@ class RoomSeeder extends Seeder
             'TV' => 1
         ]);
         Image::create([
-            'image_path' => 'images/galary/1694375023_tech.png',
+            'image_path' => 'images/gallary/1694375023_tech.png',
             'imageable_type' => Room::class,
             'imageable_id' => $room3->id,
         ]);

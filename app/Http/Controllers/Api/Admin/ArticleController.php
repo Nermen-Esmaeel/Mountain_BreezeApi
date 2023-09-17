@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Models\{Article, Image, Tag};
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use App\Models\{Article, Image, Tag};
+use App\Http\Resources\CategoryResource;
+use App\Traits\{UploadFile, ApiResponseTrait};
 use App\Http\Resources\{ArticleResource,TagResource};
 use App\Http\Requests\Article\{StoreArticle, UpdateArticle};
-use App\Traits\{UploadFile, ApiResponseTrait};
-use Illuminate\Support\Facades\File;
 
 
 class ArticleController extends Controller
@@ -62,6 +63,8 @@ class ArticleController extends Controller
             'category' =>  $input['category'],
             'title_en' => $input['title_en'],
             'title_ar' =>  $input['title_ar'],
+            'sub_title_en' => $input['sub_title_en'],
+            'sub_title_ar' =>  $input['sub_title_ar'],
             'content_en' =>  $input['content_en'],
             'content_ar' =>  $input['content_ar'],
             'date' =>  $input['date'],
@@ -81,8 +84,6 @@ class ArticleController extends Controller
                 ]);
             }
         }
-
-
         //add tags for Article table
         if ($tags = $request->tags) {
             foreach ($tags as $tag) {
@@ -102,7 +103,7 @@ class ArticleController extends Controller
     public function update(UpdateArticle $request, $id)
     {
         $input = $request->input();
-        $article = Article::find($id)->with(['images'])->orderBy('id', 'Desc')->first();
+        $article = Article::find($id);
         if ($article) {
 
             $article->update($input);
@@ -206,13 +207,6 @@ class ArticleController extends Controller
         return $this->apiResponse(null, 'the Article not found', 404);
     }
 
-    //show all tags
-    public function showTag()
-    {
-
-        $tags = Tag::all();
-        return $this->apiResponse(TagResource::collection($tags), '', 200);
-    }
 
        //search
        public function search($term){
@@ -223,9 +217,17 @@ class ArticleController extends Controller
            }else{
             return $this->apiResponse(null, 'There is no Article  like '.$term , 404);
            }
+        }
+        //show all category
+        public function getCategory()
+        {
+            //return catagories in array
+            $categories =  Article::groupBy('category')->pluck('category')->toArray();
+            return $this->apiResponse($categories, '', 200);
+    }
 
     }
 
 
 
-}
+

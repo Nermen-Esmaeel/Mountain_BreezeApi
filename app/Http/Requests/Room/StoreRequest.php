@@ -16,8 +16,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_en' => 'required|string',
-            'name_ar' => 'required|string',
+            'title_en' => 'required|string',
+            'title_ar' => 'required|string',
+            'sub_title_en' => 'required|string',
+            'sub_title_ar' => 'required|string',
             'type' => 'required|string',
             'guests_number' => 'required|integer',
             'price' => 'required|numeric',

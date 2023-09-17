@@ -11,13 +11,16 @@ class StoreRequest extends FormRequest
     {
         return [
             'article_cover' => 'required|image|file',
-            'tags' => 'required|in:Events,Nature,Activity,Chalet,Restaurant,Pool',
-            'title_en' => 'required|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
-            'title_ar' => 'required|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
-            'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/|max:1500',
-            'content_ar' => 'nullable|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
+            'category' => 'required|in:Events,Nature,Activity,Chalet,Restaurant,Pool',
+            'title_en' => 'required|string|max:255',
+            'title_ar' => 'required|string|max:255',
+            'sub_title_en' => 'required|string',
+            'sub_title_ar' => 'required|string',
+            'content_en' => 'nullable|string',
+            'content_ar' => 'nullable|string',
             'date'     => 'nullable|date',
-            'section' => 'required_if:tags,Events|date'
+            'images.*' => 'image',
+            'video' => 'url'
         ];
     }
 }
