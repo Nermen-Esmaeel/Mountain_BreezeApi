@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('article_cover')->nullable();
-            $table->string('category');
+            $table->enum('category', ['Restaurant', 'Chalet', 'Activity', 'Nature', 'Pool', 'Events']);
             $table->string('title_en');
             $table->string('title_ar');
             $table->string('sub_title_en');
