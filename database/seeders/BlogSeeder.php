@@ -167,7 +167,7 @@ class BlogSeeder extends Seeder
 
                     'article_cover' => 'images/gallary/1694375023_tech.png',
 
-                    'category' => 'Events',
+                    'category' => 'Resort Events',
 
                     'title_en'   => 'title6' ,
 
@@ -189,5 +189,35 @@ class BlogSeeder extends Seeder
                         'imageable_type' => Article::class,
                         'imageable_id' => $article6->id,
                     ]);
+
+
+
+
+            $article7 =  Article::create([
+
+                'article_cover' => 'images/gallary/1694375023_tech.png',
+
+                'category' => 'Sport Events',
+
+                'title_en'   => 'title7' ,
+
+                'title_ar'   => 'عنوان7' ,
+
+                'sub_title_en'   => 'sub title7',
+
+                'sub_title_ar'   => '7عنوان فرعي ',
+
+                'content_en'  => 'Lorem Ipsum giving information on its origins as well as'  ,
+
+                'content_ar'  => 'طريقة لكتابة النصوص في النشر والتصميم الجرافيكي تستخدم بشكل شائع'  ,
+
+                'date' => Carbon::parse('2023-09-09'),
+
+            ]);
+                Image::create([
+                    'image_path' => 'images/gallary/1694375023_tech.png',
+                    'imageable_type' => Article::class,
+                    'imageable_id' => $article7->id,
+                ]);
     }
 }

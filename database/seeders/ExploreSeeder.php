@@ -70,7 +70,19 @@ class ExploreSeeder extends Seeder
         ]);
         Explore::create([
             'article_cover' =>  'images/gallary/1694375023_tech.png',
-            'category' =>  'Events',
+            'category' =>  'Resort Events',
+            'title_en' => 'english title',
+            'title_ar' =>  'العنوان ',
+            'sub_title_en' => 'at the fresh air',
+            'sub_title_ar' =>  'في الهواء الطلق ',
+            'content_en' =>  'Newly refurnished luxury accommodation with finest quality linen & quality decor. Air conditioning Electric Blankets, Ironing Boards, Mini Bar, Flat Screen & Free in house Movies, WiFi and HouseKeeping by request.',
+            'content_ar' => 'أماكن إقامة فاخرة تم تجديدها حديثًا مع مفروشات عالية الجودة وديكور عالي الجودة. تكييف الهواء بطانيات كهربائية وطاولات كي الملابس وميني بار وشاشة مسطحة وأفلام داخلية مجانية وخدمة الواي فاي وخدمة تنظيف الغرف حسب الطلب',
+            'date' => '2023-09-07',
+        ]);
+
+        Explore::create([
+            'article_cover' =>  'images/gallary/1694375023_tech.png',
+            'category' =>  'Sport Events',
             'title_en' => 'english title',
             'title_ar' =>  'العنوان ',
             'sub_title_en' => 'at the fresh air',
