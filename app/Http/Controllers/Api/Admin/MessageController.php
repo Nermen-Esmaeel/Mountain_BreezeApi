@@ -36,7 +36,7 @@ class MessageController extends Controller
             'email' =>  $input['email'],
             'subject' => $input['subject'],
             'content' =>  $input['content'],
-            'agree'  => $input['agree'],
+            'agree'  => $request->agree,
     ]);
 
 
@@ -86,7 +86,7 @@ class MessageController extends Controller
     //delete an food
     public function forceDelete($id)
     {
-        $mssages = Message::findOrFail($id);
+        $mssages = Message::onlyTrashed()->where('id', $id)->first();
         if ($mssages) {
             $mssages->forcedelete();
             return $this->apiResponse(null, 'the mssages deleted successfully', 200);

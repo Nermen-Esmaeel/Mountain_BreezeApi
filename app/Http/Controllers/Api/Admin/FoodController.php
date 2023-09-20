@@ -32,7 +32,7 @@ class FoodController extends Controller
     //show one food
     public function show($id)
     {
-        $food = Food::findOrFail($id);
+        $food = Food::find($id);
         if ($food) {
             return $this->apiResponse(new FoodResource($food), 'ok', 200);
         }
@@ -138,8 +138,7 @@ class FoodController extends Controller
     //delete an food
     public function forceDelete($id)
     {
-        $food = Food::onlyTrashed()->where('id', $id);
-
+        $food = Food::onlyTrashed()->where('id', $id)->first();
         if ($food) {
 
             File::delete(public_path() . '/' . $food->image);

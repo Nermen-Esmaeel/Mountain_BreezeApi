@@ -15,12 +15,13 @@ class MessageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-
+            'id' => $this->id,
             'Full Name' => $this->full_name,
             'Email' => $this->email,
             'Phone' => $this->phone,
             'Subject' => $this->subject,
             'content' => $this->content,
+            'agree' => $this->agree,
             'created_at' => $this->created_at->format('d/m/Y'),
 
 

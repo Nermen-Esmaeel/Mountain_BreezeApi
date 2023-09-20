@@ -195,7 +195,8 @@ class ArticleController extends Controller
         $article = Article::find($id);
         if ($article->tags) {
             foreach ($article->tags as $tag) {
-                $tag_id = Tag::where('name', $tag->name)->get('id');
+                $tag_id = Tag::where('name', $tag_name)->get('id');
+
                 if ($tag_id) {
                     //detach : delete tag from post
                     $article->tags()->detach($tag->id);
@@ -203,7 +204,7 @@ class ArticleController extends Controller
                 }
             }
         }
-        return $this->apiResponse(null, 'the Article not found', 404);
+        return $this->apiResponse(null, 'no tag related article', 404);
     }
 
     //show tags for Article
@@ -229,11 +230,11 @@ class ArticleController extends Controller
             return $this->apiResponse(null, 'There is no Article  like ' . $term, 404);
         }
     }
-    //show all category
-    public function getCategory()
-    {
-        //return catagories in array
-        $categories =  Article::groupBy('category')->pluck('category')->toArray();
-        return $this->apiResponse($categories, '', 200);
-    }
+    // //show all category
+    // public function getCategory()
+    // {
+    //     //return catagories in array
+    //     $categories =  Article::groupBy('category')->pluck('category')->toArray();
+    //     return $this->apiResponse($categories, '', 200);
+    // }
 }

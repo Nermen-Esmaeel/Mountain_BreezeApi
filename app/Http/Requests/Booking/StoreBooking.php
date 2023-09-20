@@ -24,12 +24,12 @@ class StoreBooking extends FormRequest
         return [
             'full_name' => 'required|string',
             'phone' => 'required|string|min:8',
-            'email' => 'nullable|email',
+            'email' => 'nullable',
             'check_in_date' => 'required|date',
             'check_out_date' => 'required|date|after_or_equal:check_in_date',
             'room_type' => 'required|string',
             'guests_number' => 'required|integer',
-            'content' => 'nullable|string',
+            'content' => 'nullable',
         ];
     }
 }

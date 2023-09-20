@@ -38,6 +38,7 @@ class BookController extends Controller
  public function store(StoreBooking $request)
  {
 
+
    $input = $request->input();
 
        $booking = Book::create([
@@ -45,12 +46,12 @@ class BookController extends Controller
 
            'full_name' =>  $input['full_name'],
            'phone' => $input['phone'],
-           'email' =>  $input['email'],
+           'email' =>  $request->email,
            'check_in_date' =>  $input['check_in_date'],
            'check_out_date' =>  $input['check_out_date'],
            'room_type' =>  $input['room_type'],
            'guests_number' =>  $input['guests_number'],
-           'content' =>  $input['content'],
+           'content' => $request->content,
    ]);
 
 

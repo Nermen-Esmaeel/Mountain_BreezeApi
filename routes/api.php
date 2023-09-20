@@ -38,80 +38,66 @@ Route::controller(AuthController::class)->group(function () {
 Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
     //Blog Article Route
-    Route::group([
-        'prefix' => '/articles',
-    ], function () {
-        Route::get('/', [ArticleController::class, 'index'])->withoutMiddleware(['auth:api']);
-        Route::get('category/', [ArticleController::class, 'getCategory'])->withoutMiddleware(['auth:api']);
-        Route::get('/{id}', [ArticleController::class, 'show'])->withoutMiddleware(['auth:api']);
-        Route::post('/', [ArticleController::class, 'store']);
-        Route::post('/{id}', [ArticleController::class, 'update']);
+        Route::get('articles', [ArticleController::class, 'index'])->withoutMiddleware(['auth:api']);
+        Route::post('articles', [ArticleController::class, 'store']);
+        Route::get('articles/{id}', [ArticleController::class, 'show'])->withoutMiddleware(['auth:api']);
+        Route::post('articles/{id}', [ArticleController::class, 'update']);
         //soft delete
-        Route::get('softDelete/{id}', [ArticleController::class, 'SoftDelete']);
+        Route::get('articles/softDelete/{id}', [ArticleController::class, 'SoftDelete']);
 
         //show trash
-        Route::get('/show/Trashed', [ArticleController::class, 'trash']);
+        Route::get('articles/show/Trashed', [ArticleController::class, 'trash']);
 
         //restore
-        Route::get('trash/restore/{id}', [ArticleController::class, 'restore']);
+        Route::get('articles/trash/restore/{id}', [ArticleController::class, 'restore']);
 
         //Force Delete
-        Route::delete('/{id}', [ArticleController::class, 'forceDelete']);
+        Route::delete('articles/{id}', [ArticleController::class, 'forceDelete']);
 
 
         //search
-        Route::get('/search/{term}', [ArticleController::class, 'search']);
-    });
+        Route::get('articles/search/{term}', [ArticleController::class, 'search']);
+
 
     //Post Tag Routes
-    Route::group([
-        'prefix' => '/article.tags',
-    ], function () {
-        Route::get('/{id}', [ArticleController::class, 'showArticleTag']);
-        Route::post('/{id}', [ArticleController::class, 'deleteTagFormArticle']);
-    });
+
+        Route::get('article.tags/{id}', [ArticleController::class, 'showArticleTag']);
+        Route::post('article.tags/{id}', [ArticleController::class, 'deleteTagFormArticle']);
+
 
     //Tag Routes
-    Route::group([
-        'prefix' => '/tags',
-    ], function () {
-        Route::get('/', [TagController::class, 'index']);
-        Route::post('/', [TagController::class, 'store']);
-        Route::post('/{id}', [TagController::class, 'update']);
-        Route::delete('/{id}', [TagController::class, 'destroy']);
-    });
+        Route::get('tags', [TagController::class, 'index']);
+        Route::post('tags', [TagController::class, 'store']);
+        Route::post('tags/{id}', [TagController::class, 'update']);
+        Route::delete('tags/{id}', [TagController::class, 'destroy']);
+
 
     //Food Route
-    Route::group([
-        'prefix' => '/foods',
-    ], function () {
-        Route::get('/', [FoodController::class, 'index'])->withoutMiddleware(['auth:api']);
-        Route::get('/{id}', [FoodController::class, 'show'])->withoutMiddleware(['auth:api']);
-        Route::post('/', [FoodController::class, 'store']);
-        Route::post('/{id}', [FoodController::class, 'update']);
+        Route::get('foods', [FoodController::class, 'index'])->withoutMiddleware(['auth:api']);
+        Route::post('foods', [FoodController::class, 'store']);
+        Route::get('foods/{id}', [FoodController::class, 'show'])->withoutMiddleware(['auth:api']);
+        Route::post('foods/{id}', [FoodController::class, 'update']);
         //soft delete
-        Route::get('softDelete/{id}', [FoodController::class, 'SoftDelete']);
+        Route::get('foods/softDelete/{id}', [FoodController::class, 'SoftDelete']);
 
         //show trash
-        Route::get('/show/Trashed', [FoodController::class, 'trash']);
+        Route::get('foods/show/Trashed', [FoodController::class, 'trash']);
 
         //restore
-        Route::get('trash/restore/{id}', [FoodController::class, 'restore']);
+        Route::get('foods/trash/restore/{id}', [FoodController::class, 'restore']);
 
         //Force Delete
-        Route::delete('/{id}', [FoodController::class, 'forceDelete']);
+        Route::delete('foods/{id}', [FoodController::class, 'forceDelete']);
 
         //search
-        Route::get('/search/{term}', [FoodController::class, 'search']);
-    });
+        Route::get('foods/search/{term}', [FoodController::class, 'search']);
+
 
     //Book Route
-    Route::group([
-        'prefix' => '/books',
-    ], function () {
-        Route::get('/', [BookController::class, 'index']);
-        Route::post('/', [BookController::class, 'store'])->withoutMiddleware(['auth:api']);
-    });
+
+        Route::get('books', [BookController::class, 'index']);
+        Route::post('books', [BookController::class, 'store'])->withoutMiddleware(['auth:api']);
+
 
     //gallary/images
     Route::post('gallary', [GallaryController::class, 'store']);
@@ -147,23 +133,21 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
 
 
     //contact us Route
-    Route::group([
-        'prefix' => '/contact',
-    ], function () {
+
         //contact as
-        Route::get('/', [MessageController::class, 'index']);
-        Route::post('/', [MessageController::class, 'store'])->withoutMiddleware(['auth:api']);
+        Route::get('contact', [MessageController::class, 'index']);
+        Route::post('contact', [MessageController::class, 'store'])->withoutMiddleware(['auth:api']);
 
         //soft delete
-        Route::get('softDelete/{id}', [MessageController::class, 'SoftDelete']);
+        Route::get('contact/softDelete/{id}', [MessageController::class, 'SoftDelete']);
 
         //show trash
-        Route::get('/show/Trashed', [MessageController::class, 'trash']);
+        Route::get('contact/show/Trashed', [MessageController::class, 'trash']);
 
         //restore
-        Route::get('trash/restore/{id}', [MessageController::class, 'restore']);
+        Route::get('contact/trash/restore/{id}', [MessageController::class, 'restore']);
 
         //Force Delete
-        Route::delete('/{id}', [MessageController::class, 'forceDelete']);
-    });
+        Route::delete('contact/{id}', [MessageController::class, 'forceDelete']);
+
 });
