@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('sub_title_ar');
             $table->longText('content_en')->nullable();
             $table->longText('content_ar')->nullable();
-            $table->string('video')->nullable();
             $table->string('date')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -48,6 +48,7 @@ class ExploreController extends Controller
             $cover =  $image->storeAs('images/explore', $imageName, 'public');
         }
 
+
         $explore = Explore::create([
             'article_cover' =>  $cover,
             'category' =>  $request->category,
@@ -58,7 +59,7 @@ class ExploreController extends Controller
             'content_en' =>  $request->content_en,
             'content_ar' =>  $request->content_ar,
             'date' => $request->date,
-            'video' => $request->video
+
         ]);
 
 
@@ -75,6 +76,17 @@ class ExploreController extends Controller
                 }
             }
         }
+
+            //insert video
+            if ($videos = $request->videos) {
+
+            foreach ($videos as $video) {
+                $explore->videos()->create([
+                    'link' => $video,
+                ]);
+            }
+        }
+
         //add tags for Explore table
         if ($tags = $request->tags) {
             foreach ($tags as $tag) {
@@ -117,6 +129,14 @@ class ExploreController extends Controller
                 ]);
             }
         }
+
+        if ($videos = $request->videos) {
+            foreach ($videos as $video) {
+                $explore->videos()->update([
+                    'link' => $video,
+                ]);
+            }
+        }
         $explore->update($data);
         return new ExploreResource($explore);
     }
@@ -128,6 +148,13 @@ class ExploreController extends Controller
     {
         Explore::findOrFail($explore->id);
         if ($explore) {
+             //check if article have videos
+             if ($explore->videos()) {
+
+                foreach ( $explore->videos as $video){
+                    $explore->videos()->delete();
+                }
+            }
             $explore->delete();
             return response()->json([
                 'message' => 'Article deleted successfuly!',

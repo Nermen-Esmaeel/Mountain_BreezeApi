@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('type');
             $table->integer('floor');
             $table->boolean('room_services');
-            $table->string('bed');
+            $table->boolean('bed');
             $table->boolean('TV');
             $table->integer('guests_number');
             $table->integer('price');

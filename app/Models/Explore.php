@@ -31,9 +31,14 @@ class Explore extends Model
     {
         return $this->morphMany(Image::class, 'imageable');
     }
-        //many to many between explore and tag
-        public function tags(): BelongsToMany
-        {
-            return $this->belongsToMany(Tag::class, 'explores_tags', 'explore_id', 'tag_id')->as('explores_tags');
-        }
+    //many to many between explore and tag
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'explores_tags', 'explore_id', 'tag_id')->as('explores_tags');
+    }
+
+    public function videos()
+    {
+        return $this->morphMany(articleVideo::class, 'videoable');
+    }
 }

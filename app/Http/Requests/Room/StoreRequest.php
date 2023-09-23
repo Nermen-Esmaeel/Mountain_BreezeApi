@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
             'content_ar' => 'required|string',
             'images.*' => 'required',
             'room_services' => 'required|boolean',
-            'bed' => 'required|string',
+            'bed' => 'required|boolean',
             'floor' => 'required|integer|min:1',
             'TV' => 'required|boolean'
         ];

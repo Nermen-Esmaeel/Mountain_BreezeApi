@@ -39,10 +39,9 @@ class Article extends Model
     }
 
 
-    //one to many between article and video
     public function videos()
     {
-        return $this->hasMany(Image::class, 'article_id', 'id');
+        return $this->morphMany(articleVideo::class, 'videoable');
     }
 
     public function images()

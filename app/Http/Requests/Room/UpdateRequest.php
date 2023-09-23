@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
             'content_ar' => 'string',
             'images.*' => 'image',
             'room_services' => 'boolean',
-            'bed' => 'string',
+            'bed' => 'boolean',
             'floor' => 'integer|min:1',
             'TV' => 'boolean'
         ];

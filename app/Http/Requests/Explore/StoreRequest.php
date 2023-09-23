@@ -20,7 +20,7 @@ class StoreRequest extends FormRequest
             'content_ar' => 'nullable|string',
             'date'     => 'nullable|date',
             'images.*' => 'image',
-            'video' => 'url'
+
         ];
     }
 }

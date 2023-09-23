@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\{Article, Image, Tag};
 use App\Http\Resources\CategoryResource;
 use App\Traits\{UploadFile, ApiResponseTrait};
-use App\Http\Resources\{ArticleResource, TagResource};
+use App\Http\Resources\{ArticleResource,ArticleVideoResource};
 use App\Http\Requests\Article\{StoreArticle, UpdateArticle};
 
 
@@ -28,7 +28,7 @@ class ArticleController extends Controller
         if ($request->date) {
             $articles->where('date', $request->date);
         }
-        return $this->apiResponse(ArticleResource::collection($articles->with(['tags', 'images'])->get()), '', 200);
+        return $this->apiResponse(ArticleResource::collection($articles->with(['tags', 'images','videos'])->get()), '', 200);
     }
 
     //show one article
@@ -39,7 +39,7 @@ class ArticleController extends Controller
         //fetch  post from database and store in $posts
         if ($article) {
 
-            $article = Article::query()->where('id', '=', $id)->with(['tags', 'images'])->first();
+            $article = Article::query()->where('id', '=', $id)->with(['tags', 'images' ,'videos'])->first();
 
             return $this->apiResponse(new ArticleResource($article), 'ok', 200);
         }
@@ -83,6 +83,14 @@ class ArticleController extends Controller
                 ]);
             }
         }
+        //insert video
+        if ($videos = $request->videos) {
+            foreach ($videos as $video) {
+                $article->videos()->create([
+                    'link' => $video,
+                ]);
+            }
+        }
         //add tags for Article table
         if ($tags = $request->tags) {
             foreach ($tags as $tag) {
@@ -102,8 +110,16 @@ class ArticleController extends Controller
     {
         $input = $request->input();
         $article = Article::find($id);
+
         if ($article) {
 
+                if ($videos = $request->videos) {
+                    foreach ($videos as $video) {
+                        $article->videos()->update([
+                            'link' => $video,
+                        ]);
+                    }
+                }
             $article->update($input);
             if ($request->article_cover) {
 
@@ -125,6 +141,7 @@ class ArticleController extends Controller
                     ]);
                 }
             }
+
             return $this->apiResponse(new ArticleResource($article), 'the article updated successfully ', 201);
         }
         return $this->apiResponse(null, 'the article not found', 404);
@@ -175,9 +192,16 @@ class ArticleController extends Controller
     public function forceDelete($id)
     {
         $article = Article::onlyTrashed()->where('id', $id)->first();
+
         if ($article) {
 
-            //  File::delete(public_path() . '/' . $article->article_cover);
+            //check if article have videos
+            if ($article->videos()) {
+
+                foreach ( $article->videos as $video){
+                    $article->videos()->delete();
+                }
+            }
             $article->tags()->detach();
             $article->forcedelete();
             return $this->apiResponse(null, 'the Article deleted successfully', 200);

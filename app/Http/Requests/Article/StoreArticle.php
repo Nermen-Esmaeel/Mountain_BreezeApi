@@ -29,9 +29,9 @@ class StoreArticle extends FormRequest
         return [
 
             'article_cover' => 'required|image|file',
-            'category' => 'required|in:Resort Events,Sport Events,Nature,Activity,Chalet,Restaurant,Pool',
-            'title_en' => 'required|string|regex:/^[a-zA-Z& ]+$/',
-            'title_ar' => 'required|string|regex:/^[\p{Arabic} ]+$/u',
+            'category' => 'required|in:Resort Events,Sport Events,Activity,Nature,Chalet,Restaurant,Pool',
+            'title_en' => 'required|string',
+            'title_ar' => 'required|string',
             'sub_title_en' => 'required|string',
             'sub_title_ar' => 'required|string',
             'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/',
@@ -45,10 +45,6 @@ class StoreArticle extends FormRequest
 
             'article_cover'       => 'Article cover image field is required!',
             'category.in'    => 'category field must be Resort Events , Sport Events , Nature , Activity , Chalet , Restaurant or Pool ',
-            'title_en.regex' => 'The title_en must include only english letters.',
-            'title_ar.regex' => 'The title_ar must include only arabic letters.',
-            'content_en.regex' => 'The content_en must include only english letters.',
-            'content_ar.regex' => 'The content_ar must include only arabic letters.',
             'date.required' => 'Date field is required!' ,
 
         ];

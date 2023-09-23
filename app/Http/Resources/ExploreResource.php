@@ -15,7 +15,9 @@ class ExploreResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'article_cover' => $this->article_cover,
+
+            'id' => $this->id,
+            'article_cover' => asset($this->article_cover),
             'title' => [
                 'en' => $this->title_en,
                 'ar' => $this->title_ar,
@@ -30,7 +32,7 @@ class ExploreResource extends JsonResource
             ],
             'category' => $this->category,
             'date' => $this->date,
-            'video' => $this->video,
+            'videos'     =>  ArticleVideoResource::collection($this->videos),
             'images' => ImageResource::collection($this->images)
         ];
     }

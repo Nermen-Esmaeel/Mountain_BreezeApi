@@ -41,7 +41,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::get('articles', [ArticleController::class, 'index'])->withoutMiddleware(['auth:api']);
         Route::post('articles', [ArticleController::class, 'store']);
         Route::get('articles/{id}', [ArticleController::class, 'show'])->withoutMiddleware(['auth:api']);
-        Route::post('articles/{id}', [ArticleController::class, 'update']);
+        Route::put('articles/{id}', [ArticleController::class, 'update']);
         //soft delete
         Route::get('articles/softDelete/{id}', [ArticleController::class, 'SoftDelete']);
 
@@ -68,7 +68,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     //Tag Routes
         Route::get('tags', [TagController::class, 'index']);
         Route::post('tags', [TagController::class, 'store']);
-        Route::post('tags/{id}', [TagController::class, 'update']);
+        Route::put('tags/{id}', [TagController::class, 'update']);
         Route::delete('tags/{id}', [TagController::class, 'destroy']);
 
 
@@ -76,7 +76,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::get('foods', [FoodController::class, 'index'])->withoutMiddleware(['auth:api']);
         Route::post('foods', [FoodController::class, 'store']);
         Route::get('foods/{id}', [FoodController::class, 'show'])->withoutMiddleware(['auth:api']);
-        Route::post('foods/{id}', [FoodController::class, 'update']);
+        Route::put('foods/{id}', [FoodController::class, 'update']);
         //soft delete
         Route::get('foods/softDelete/{id}', [FoodController::class, 'SoftDelete']);
 
@@ -111,7 +111,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     //Rooms
     Route::get('rooms', [RoomController::class, 'index'])->withoutMiddleware(['auth:api']);
     Route::post('rooms', [RoomController::class, 'store']);
-    Route::post('rooms/{room}', [RoomController::class, 'update']);
+    Route::put('rooms/{room}', [RoomController::class, 'update']);
     Route::get('rooms/{room}', [RoomController::class, 'show'])->withoutMiddleware(['auth:api']);;
     Route::delete('rooms/{room}', [RoomController::class, 'destroy']);
     //soft delete
@@ -125,7 +125,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     //Explore
     Route::get('explores', [ExploreController::class, 'index'])->withoutMiddleware(['auth:api']);;
     Route::post('explores', [ExploreController::class, 'store']);
-    Route::post('explores/{explore}', [ExploreController::class, 'update']);
+    Route::put('explores/{explore}', [ExploreController::class, 'update']);
     Route::get('explores/{explore}', [ExploreController::class, 'show'])->withoutMiddleware(['auth:api']);;
     Route::delete('explores/{explore}', [ExploreController::class, 'destroy']);
 

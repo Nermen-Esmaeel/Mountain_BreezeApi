@@ -27,10 +27,10 @@ class UpdateFood extends FormRequest
 
             'image' => 'nullable|image',
             'category' => 'nullable|in:Westren Food,Oriental Food,Traditional Food',
-            'title_en' => 'nullable|string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
-            'title_ar' => 'nullable|string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
-            'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/|max:1500',
-            'content_ar' => 'nullable|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
+            'title_en' => 'nullable|string',
+            'title_ar' => 'nullable|string',
+            'content_en' => 'nullable|string',
+            'content_ar' => 'nullable|string',
             'image_size'     => 'nullable|in:x1,x3'
             ];
     }
@@ -39,8 +39,6 @@ class UpdateFood extends FormRequest
         return [
 
             'category.in'    => 'category field must be Westren Food , Oriental Food or Traditional Food',
-            'title.regex' => 'The title must include only english letters.',
-            'content.regex' => 'The description must include only english letters.',
             'image_size.in' => 'image size must be x1 or x3' ,
 
         ];
