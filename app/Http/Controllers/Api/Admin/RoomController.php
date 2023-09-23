@@ -142,7 +142,7 @@ class RoomController extends Controller
     public function trash()
     {
 
-        $rooms = Room::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+        $rooms = Room::onlyTrashed()->with(['images'])->orderBy('deleted_at', 'desc')->get();
         if ($rooms) {
 
             return response()->json([

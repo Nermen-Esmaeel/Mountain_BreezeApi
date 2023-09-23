@@ -99,8 +99,7 @@ class ArticleController extends Controller
             }
         }
 
-        $article = Article::find($article->id)->with(['images'])->orderBy('id', 'Desc')->first();
-
+        $article = Article::find($article->id)->with(['tags', 'images' ,'videos'])->orderBy('id', 'Desc')->first();
 
         return $this->apiResponse(new ArticleResource($article), 'Article created successfully', 201);
     }
@@ -109,7 +108,7 @@ class ArticleController extends Controller
     public function update(UpdateArticle $request, $id)
     {
         $input = $request->input();
-        $article = Article::find($id);
+        $article = Article::find($article->id)->with(['tags', 'images' ,'videos'])->orderBy('id', 'Desc')->first();
 
         if ($article) {
 
@@ -167,7 +166,7 @@ class ArticleController extends Controller
     public function trash()
     {
 
-        $articles = ArticleResource::collection(Article::onlyTrashed()->orderBy('deleted_at', 'desc')->get());
+        $articles = ArticleResource::collection(Article::onlyTrashed()->with(['tags', 'images' ,'videos'])->orderBy('deleted_at', 'desc')->get());
         if ($articles) {
             return $this->apiResponse($articles, null, 200);
         }
