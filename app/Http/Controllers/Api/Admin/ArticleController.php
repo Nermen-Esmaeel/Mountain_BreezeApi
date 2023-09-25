@@ -75,8 +75,11 @@ class ArticleController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $path = $image->storeAs('images/article', $filename);
+
+                $extension = $image->getClientOriginalExtension();
+                $file_to_store = 'article_images' . '_' . time() . '.' . $extension;
+                $image->storeAs('public/' . 'article_images', $file_to_store);
+                $path ='article_images/'.$file_to_store;
 
                 $article->images()->create([
                     'image_path' => $path,
@@ -108,7 +111,7 @@ class ArticleController extends Controller
     public function update(UpdateArticle $request, $id)
     {
         $input = $request->input();
-        $article = Article::find($article->id)->with(['tags', 'images' ,'videos'])->orderBy('id', 'Desc')->first();
+        $article = Article::find($id)->with(['tags', 'images' ,'videos'])->orderBy('id', 'Desc')->first();
 
         if ($article) {
 
@@ -133,8 +136,12 @@ class ArticleController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $filename = time() . '_' . $image->getClientOriginalName();
-                    $path = $image->storeAs('images/article', $filename);
+
+                    $extension = $image->getClientOriginalExtension();
+                    $file_to_store = 'article_images' . '_' . time() . '.' . $extension;
+                    $image->storeAs('public/' . 'article_images', $file_to_store);
+                    $path ='article_images/'.$file_to_store;
+
                     $article->images()->update([
                         'image_path' => $path
                     ]);

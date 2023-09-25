@@ -67,8 +67,11 @@ class ExploreController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $filename = time() . '_' . $image->getClientOriginalName();
-                    $path = $image->storeAs('images/explore', $filename);
+
+                    $extension = $image->getClientOriginalExtension();
+                    $file_to_store = 'explore_images' . '_' . time() . '.' . $extension;
+                    $image->storeAs('public/' . 'explore_images', $file_to_store);
+                    $path ='explore_images/'.$file_to_store;
 
                     $explore->images()->create([
                         'image_path' => $path,
@@ -122,11 +125,14 @@ class ExploreController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $path = $image->storeAs('images/explore', $filename);
-                $explore->images()->update([
-                    'image_path' => $path
-                ]);
+
+                   $extension = $image->getClientOriginalExtension();
+                    $file_to_store = 'explore_images' . '_' . time() . '.' . $extension;
+                    $image->storeAs('public/' . 'explore_images', $file_to_store);
+                    $path ='explore_images/'.$file_to_store;
+                    $explore->images()->update([
+                        'image_path' => $path
+                    ]);
             }
         }
 

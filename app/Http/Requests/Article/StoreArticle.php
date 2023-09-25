@@ -43,7 +43,7 @@ class StoreArticle extends FormRequest
     public function messages(){
         return [
 
-            'article_cover'       => 'Article cover image field is required!',
+            'article_cover'   => 'Article cover image field is required!',
             'category.in'    => 'category field must be Resort Events , Sport Events , Nature , Activity , Chalet , Restaurant or Pool ',
             'date.required' => 'Date field is required!' ,
 

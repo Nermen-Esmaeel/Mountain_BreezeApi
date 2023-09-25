@@ -79,8 +79,11 @@ class RoomController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $path =  $image->storeAs('images/rooms', $filename);
+
+                $extension = $image->getClientOriginalExtension();
+                $file_to_store = 'room_image' . '_' . time() . '.' . $extension;
+                $image->storeAs('public/' . 'room_images', $file_to_store);
+                $path ='room_images/'.$file_to_store;
 
                 $room->images()->create([
                     'image_path' => $path,
@@ -103,10 +106,14 @@ class RoomController extends Controller
         $data = $request->validated();
 
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $path = $image->storeAs('images/rooms', $filename);
+        if ($request->images) {
+            foreach ($request->images as $image) {
+
+                $extension = $image->getClientOriginalExtension();
+                $file_to_store = 'room_image' . '_' . time() . '.' . $extension;
+                $image->storeAs('public/' . 'room_images', $file_to_store);
+                $path ='room_images/'.$file_to_store;
+
                 $room->images()->update([
                     'image_path' => $path
                 ]);
