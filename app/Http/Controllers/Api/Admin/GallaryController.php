@@ -47,8 +47,8 @@ class GallaryController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
 
-                   $extension = $image->getClientOriginalExtension();
-                    $file_to_store = 'gallery_images' . '_' . time() . '.' . $extension;
+                   $file_name = $image->getClientOriginalName();
+                    $file_to_store = 'gallery_images' . '_' . time() . '.' . $file_name;
                     $image->storeAs('public/' . 'gallery_images', $file_to_store);
                     $path ='gallery_images/'.$file_to_store;
 

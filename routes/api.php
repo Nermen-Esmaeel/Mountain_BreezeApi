@@ -77,14 +77,6 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         Route::post('foods', [FoodController::class, 'store']);
         Route::get('foods/{id}', [FoodController::class, 'show'])->withoutMiddleware(['auth:api']);
         Route::put('foods/{id}', [FoodController::class, 'update']);
-        //soft delete
-        Route::get('foods/softDelete/{id}', [FoodController::class, 'SoftDelete']);
-
-        //show trash
-        Route::get('foods/show/Trashed', [FoodController::class, 'trash']);
-
-        //restore
-        Route::get('foods/trash/restore/{id}', [FoodController::class, 'restore']);
 
         //Force Delete
         Route::delete('foods/{id}', [FoodController::class, 'forceDelete']);
@@ -137,17 +129,10 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
         //contact as
         Route::get('contact', [MessageController::class, 'index']);
         Route::post('contact', [MessageController::class, 'store'])->withoutMiddleware(['auth:api']);
-
-        //soft delete
-        Route::get('contact/softDelete/{id}', [MessageController::class, 'SoftDelete']);
-
-        //show trash
-        Route::get('contact/show/Trashed', [MessageController::class, 'trash']);
-
-        //restore
-        Route::get('contact/trash/restore/{id}', [MessageController::class, 'restore']);
-
         //Force Delete
+
+        Route::delete('contact/multiRecords', [MessageController::class, 'deleteAll']);
         Route::delete('contact/{id}', [MessageController::class, 'forceDelete']);
+
 
 });

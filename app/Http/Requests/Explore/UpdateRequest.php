@@ -11,13 +11,13 @@ class UpdateRequest extends FormRequest
     {
         return [
             'article_cover' => 'image|file',
-            'category' => 'in:Resort Events, Sport Events , Nature,Activity,Chalet,Restaurant,Pool',
-            'title_en' => 'string|max:255|regex:/^[a-zA-Z& ]+$/|max:100',
-            'title_ar' => 'string|max:255|regex:/^[\p{Arabic} ]+$/u|max:100',
+            'category' => 'in:Resort Events,Sport Events,Nature,Activity,Chalet,Restaurant,Pool',
+            'title_en' => 'string|max:255',
+            'title_ar' => 'string|max:255',
             'sub_title_en' => 'nullable|string',
             'sub_title_ar' => 'nullable|string',
-            'content_en' => 'nullable|string|regex:/^[a-zA-Z& ]+$/|max:1500',
-            'content_ar' => 'nullable|string|regex:/^[\p{Arabic} ]+$/u|max:1500',
+            'content_en' => 'nullable|string',
+            'content_ar' => 'nullable|string',
             'date'     => 'nullable|date',
 
         ];

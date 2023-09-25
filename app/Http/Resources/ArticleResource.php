@@ -36,9 +36,9 @@ class ArticleResource extends JsonResource
             'date' => $this->date,
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),
-            'videos'     =>  ArticleVideoResource::collection($this->whenLoaded('videos')),
-            'tags' =>  TagResource::collection($this->whenLoaded('tags')),
-            'images' =>  ImageResource::collection($this->whenLoaded('images')),
+            'videos'     =>  ArticleVideoResource::collection($this->videos),
+            'tags' =>  TagResource::collection($this->tags),
+            'images' =>  ImageResource::collection($this->images),
         ];
     }
 }

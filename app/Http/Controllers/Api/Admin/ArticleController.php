@@ -21,14 +21,14 @@ class ArticleController extends Controller
     {
 
 
-        $articles = Article::query();
+        $articles = Article::query()->orderBy('id', 'Desc')->paginate(6);
         if ($request->category) {
             $articles->where('category', $request->category);
         }
         if ($request->date) {
             $articles->where('date', $request->date);
         }
-        return $this->apiResponse(ArticleResource::collection($articles->with(['tags', 'images','videos'])->get()), '', 200);
+        return $this->apiResponse(ArticleResource::collection($articles), '', 200);
     }
 
     //show one article
@@ -54,7 +54,10 @@ class ArticleController extends Controller
 
         if ($request->hasFile('article_cover')) {
 
-            $path = $this->UploadFile('Article_Covers', $request->file('article_cover'));
+            $file_name = $request->file('article_cover')->getClientOriginalName();
+            $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
+            $request->file('article_cover')->storeAs('public/' . 'article_images', $file_to_store);
+            $path ='article_images/'.$file_to_store;
         }
 
         $article = Article::create([
@@ -76,8 +79,8 @@ class ArticleController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
 
-                $extension = $image->getClientOriginalExtension();
-                $file_to_store = 'article_images' . '_' . time() . '.' . $extension;
+                $file_name = $image->getClientOriginalName();
+                $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
                 $image->storeAs('public/' . 'article_images', $file_to_store);
                 $path ='article_images/'.$file_to_store;
 
@@ -102,7 +105,7 @@ class ArticleController extends Controller
             }
         }
 
-        $article = Article::find($article->id)->with(['tags', 'images' ,'videos'])->orderBy('id', 'Desc')->first();
+        $article = Article::find($article->id)->orderBy('id', 'Desc')->first();
 
         return $this->apiResponse(new ArticleResource($article), 'Article created successfully', 201);
     }
@@ -110,8 +113,9 @@ class ArticleController extends Controller
     //update an article
     public function update(UpdateArticle $request, $id)
     {
+
         $input = $request->input();
-        $article = Article::find($id)->with(['tags', 'images' ,'videos'])->orderBy('id', 'Desc')->first();
+        $article = Article::find($id);
 
         if ($article) {
 
@@ -125,20 +129,23 @@ class ArticleController extends Controller
             $article->update($input);
             if ($request->article_cover) {
 
-                $path = $this->UploadFile('Article_Covers', $request->file('article_cover'));
-                File::delete(public_path() . '/' . $article->article_cover);
+                Storage::disk('public')->delete($article->article_cover);
+                $file_name = $request->file('article_cover')->getClientOriginalName();
+                $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
+                $request->file('article_cover')->storeAs('public/' . 'article_images', $file_to_store);
+                $path ='article_images/'.$file_to_store;
 
-                $article->update([
-                    'article_cover' => $path,
-                ]);
+                    $article->update([
+                        'article_cover' => $path,
+                    ]);
             }
 
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
 
-                    $extension = $image->getClientOriginalExtension();
-                    $file_to_store = 'article_images' . '_' . time() . '.' . $extension;
+                    $file_name = $image->getClientOriginalName();
+                    $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
                     $image->storeAs('public/' . 'article_images', $file_to_store);
                     $path ='article_images/'.$file_to_store;
 

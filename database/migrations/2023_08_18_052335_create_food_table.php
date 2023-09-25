@@ -20,7 +20,6 @@ return new class extends Migration
             $table->longText('content_en');
             $table->longText('content_ar');
             $table->enum('image_size', ['x1', 'x3'])->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

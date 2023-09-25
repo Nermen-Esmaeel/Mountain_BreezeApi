@@ -43,14 +43,16 @@ class ExploreController extends Controller
         $request->validated();
 
         if ($request->hasFile('article_cover') && $request->file('article_cover')->isValid()) {
-            $image = $request->file('article_cover');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $cover =  $image->storeAs('images/explore', $imageName, 'public');
+
+            $file_name = $request->file('article_cover')->getClientOriginalName();
+            $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
+            $request->file('article_cover')->storeAs('public/' . 'explore_images', $file_to_store);
+            $path ='explore_images/'.$file_to_store;
         }
 
 
         $explore = Explore::create([
-            'article_cover' =>  $cover,
+            'article_cover' =>  $path,
             'category' =>  $request->category,
             'title_en' => $request->title_en,
             'title_ar' =>  $request->title_ar,
@@ -68,8 +70,8 @@ class ExploreController extends Controller
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
 
-                    $extension = $image->getClientOriginalExtension();
-                    $file_to_store = 'explore_images' . '_' . time() . '.' . $extension;
+                    $file_name = $image->getClientOriginalName();
+                    $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
                     $image->storeAs('public/' . 'explore_images', $file_to_store);
                     $path ='explore_images/'.$file_to_store;
 
@@ -114,10 +116,11 @@ class ExploreController extends Controller
 
         if ($request->hasFile('article_cover') && $request->file('article_cover')->isValid()) {
 
-            Storage::disk('public')->delete('images/explore' . $explore->image);
-            $newImage = $request->file('article_cover');
-            $newImageName = time() . '_' . $newImage->getClientOriginalName();
-            $path = $newImage->storeAs('images/explore', $newImageName, 'public');
+            Storage::disk('public')->delete($explore->image);
+            $file_name = $request->file('explore_images')->getClientOriginalName();
+            $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
+            $request->file('article_cover')->storeAs('public/' . 'explore_images', $file_to_store);
+            $path ='explore_images/'.$file_to_store;
             $data['article_cover'] = $path;
         }
 
@@ -126,13 +129,14 @@ class ExploreController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
 
-                   $extension = $image->getClientOriginalExtension();
-                    $file_to_store = 'explore_images' . '_' . time() . '.' . $extension;
-                    $image->storeAs('public/' . 'explore_images', $file_to_store);
-                    $path ='explore_images/'.$file_to_store;
-                    $explore->images()->update([
-                        'image_path' => $path
-                    ]);
+                $file_name = $image->getClientOriginalName();
+                $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
+                $image->storeAs('public/' . 'explore_images', $file_to_store);
+                $path ='explore_images/'.$file_to_store;
+
+                $explore->images()->update([
+                    'image_path' => $path
+                ]);
             }
         }
 

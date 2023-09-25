@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\Food;
-use App\Http\Controllers\Controller;
+use App\Traits\UploadFile;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\FoodResource;
-use App\Http\Requests\Food\{StoreFood, UpdateFood};
-use App\Traits\UploadFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Food\{StoreFood, UpdateFood};
 
 
 class FoodController extends Controller
@@ -47,7 +48,12 @@ class FoodController extends Controller
 
         $input = $request->input();
         if ($request->hasFile('image')) {
-            $path = $this->UploadFile('Foods', $request->file('image'));
+
+            $file_name =  $request->file('image')->getClientOriginalName();
+            $file_to_store = 'food_images' . '_' . time() . '.' . $file_name;
+            $request->file('image')->storeAs('public/' . 'food_images', $file_to_store);
+            $path ='food_images/'.$file_to_store;
+
         }
         $food = Food::create([
 
@@ -67,7 +73,7 @@ class FoodController extends Controller
         }
 
         $food = Food::find($food->id);
-        return $this->apiResponse($food, 'Food created successfully', 201);
+        return $this->apiResponse(new FoodResource($food), 'Food created successfully', 201);
     }
 
 
@@ -84,14 +90,22 @@ class FoodController extends Controller
 
             if ($request->hasFile('image')) {
 
-                $path = $this->UploadFile('images/foods', $request->file('image'));
-                File::delete(public_path() . '/' . $food->image);
+                $image = $request->file('image');
+
+                Storage::disk('public')->delete($food->image);
+
+                $file_name = $image->getClientOriginalName();
+                $file_to_store = 'food_images' . '_' . time() . '.' . $file_name;
+                $image->storeAs('public/' . 'food_images', $file_to_store);
+                $path ='food_images/'.$file_to_store;
+
+
                 $food->update([
                     'image' => $path,
                     'image_size' =>  $request->image_size,
                 ]);
             }
-            return $this->apiResponse($food, 'the food updated successfully ', 201);
+            return $this->apiResponse(new FoodResource($food), 'the food updated successfully ', 201);
         }
 
         return $this->apiResponse(null, 'the food not found', 404);
@@ -99,50 +113,16 @@ class FoodController extends Controller
 
 
 
-    //soft delete
-    public function SoftDelete($id)
-    {
-        $food = Food::find($id);
-        if ($food) {
-
-            $food->delete($id);
-            return $this->apiResponse(null, ' Food  Moved to Trash successfully', 200);
-        }
-
-        return $this->apiResponse(null, ' Food not found', 404);
-    }
-
-
-    //show trash
-    public function trash()
-    {
-
-        $foods = Food::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
-        if ($foods) {
-            return $this->apiResponse($foods, null, 200);
-        }
-        return $this->apiResponse(null, 'No Foods in Trash', 404);
-    }
-
-
-    //restore from trached
-    public function restore($id)
-    {
-
-
-        $food = Food::onlyTrashed()->where('id', $id)->first()->restore();
-        return $this->apiResponse(null, 'Food restore successfully', 201);
-    }
 
 
     //delete an food
     public function forceDelete($id)
     {
-        $food = Food::onlyTrashed()->where('id', $id)->first();
+        $food = Food::find($id);
         if ($food) {
 
-            File::delete(public_path() . '/' . $food->image);
-            $food->forcedelete();
+            // File::delete(public_path() . '/' . $food->image);
+            $food->delete();
             return $this->apiResponse(null, 'the food deleted successfully', 200);
         }
 

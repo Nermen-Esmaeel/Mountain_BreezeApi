@@ -20,7 +20,7 @@ class BookController extends Controller
      //Show All Article
      public function index(Request $request)
      {
-        $bookings = Book::query();
+        $bookings = Book::query()->orderBy('id', 'Desc');
         if($request->room_type){
              $bookings->where('room_type', $request->room_type );
          }

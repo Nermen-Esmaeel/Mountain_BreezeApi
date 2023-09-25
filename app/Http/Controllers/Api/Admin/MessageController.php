@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Message\StoreMessage;
-use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
+use App\Http\Controllers\Controller;
+
+use App\Http\Resources\MessageResource;
+use App\Http\Requests\Message\StoreMessage;
 
 class MessageController extends Controller
 {
@@ -17,7 +19,7 @@ class MessageController extends Controller
         //Show All Message
         public function index()
         {
-            $messages  = MessageResource::collection(Message::query()->get());
+            $messages  = MessageResource::collection(Message::query()->orderBy('id', 'Desc')->get());
             return $this->apiResponse($messages,'ok' ,200);
         }
 
@@ -48,51 +50,31 @@ class MessageController extends Controller
 
 
 
-    //soft delete
-    public function SoftDelete($id)
-    {
-        $message = Message::find($id);
-        if ($message) {
-
-            $message->delete($id);
-            return $this->apiResponse(null, ' Message  Moved to Trash successfully', 200);
-        }
-
-        return $this->apiResponse(null, ' Message not found', 404);
-    }
-
-
-    //show trash
-    public function trash(){
-
-            $messages = Message::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
-            if ($messages) {
-                return $this->apiResponse($messages, null , 200);
-            }
-            return $this->apiResponse(null, 'No Messages in Trash', 404);
-    }
-
-
-    //restore from trached
-    public function restore($id){
-
-
-            $food = Message::onlyTrashed()->where('id' , $id)->first()->restore();
-            return $this->apiResponse(null, 'Message restore successfully', 201);
-
-    }
-
-
-    //delete an food
+    //delete an message
     public function forceDelete($id)
     {
-        $mssages = Message::onlyTrashed()->where('id', $id)->first();
+
+        $mssages = Message::find($id);
+
         if ($mssages) {
-            $mssages->forcedelete();
+            $mssages->delete();
             return $this->apiResponse(null, 'the mssages deleted successfully', 200);
         }
 
         return $this->apiResponse(null, 'the mssages not found', 404);
     }
 
+    //delete an message
+    public function deleteAll(Request $request)
+    {
+        $ids =  $request->ids;
+
+
+        if ($ids) {
+            Message::whereIn('id' ,$ids)->delete();
+            return $this->apiResponse(null, 'the mssages deleted successfully', 200);
+        }
+
+        return $this->apiResponse(null, 'the mssages not found', 404);
+    }
 }
