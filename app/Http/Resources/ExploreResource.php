@@ -33,6 +33,7 @@ class ExploreResource extends JsonResource
             'category' => $this->category,
             'date' => $this->date,
             'videos'     =>  ArticleVideoResource::collection($this->videos),
+            'tags' =>  TagResource::collection($this->tags),
             'images' => ImageResource::collection($this->images)
         ];
     }

@@ -82,6 +82,7 @@ class FoodController extends Controller
     {
 
 
+
         $input = $request->input();
         $food = Food::find($id);
 

@@ -11,7 +11,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'article_cover' => 'required|image|file',
-            'category' => 'in:Resort Events, Sport Events,Nature,Activity,Chalet,Restaurant,Pool',
+            'category' => 'in:Resort Events,Sport Events,Nature,Activity,Chalet,Restaurant,Pool',
             'title_en' => 'required|string|max:255',
             'title_ar' => 'required|string|max:255',
             'sub_title_en' => 'required|string',
