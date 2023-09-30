@@ -45,7 +45,7 @@ class ExploreController extends Controller
         if ($request->hasFile('article_cover') && $request->file('article_cover')->isValid()) {
 
             $file_name = $request->file('article_cover')->getClientOriginalName();
-            $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
+            $file_to_store = 'explore_images' . '_' . time().$file_name;
             $request->file('article_cover')->storeAs('public/' . 'explore_images', $file_to_store);
             $path ='explore_images/'.$file_to_store;
         }
@@ -71,7 +71,7 @@ class ExploreController extends Controller
                 foreach ($request->file('images') as $image) {
 
                     $file_name = $image->getClientOriginalName();
-                    $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
+                    $file_to_store = 'explore_images' . '_' . time().$file_name;
                     $image->storeAs('public/' . 'explore_images', $file_to_store);
                     $path ='explore_images/'.$file_to_store;
 
@@ -118,7 +118,7 @@ class ExploreController extends Controller
 
             Storage::disk('public')->delete($explore->image);
             $file_name = $request->file('explore_images')->getClientOriginalName();
-            $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
+            $file_to_store = 'explore_images' . '_' . time() .$file_name;
             $request->file('article_cover')->storeAs('public/' . 'explore_images', $file_to_store);
             $path ='explore_images/'.$file_to_store;
             $data['article_cover'] = $path;
@@ -130,7 +130,7 @@ class ExploreController extends Controller
             foreach ($request->file('images') as $image) {
 
                 $file_name = $image->getClientOriginalName();
-                $file_to_store = 'explore_images' . '_' . time() . '.' . $file_name;
+                $file_to_store = 'explore_images' . '_' . time().$file_name;
                 $image->storeAs('public/' . 'explore_images', $file_to_store);
                 $path ='explore_images/'.$file_to_store;
 

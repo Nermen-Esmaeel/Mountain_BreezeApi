@@ -50,7 +50,7 @@ class FoodController extends Controller
         if ($request->hasFile('image')) {
 
             $file_name =  $request->file('image')->getClientOriginalName();
-            $file_to_store = 'food_images' . '_' . time() . '.' . $file_name;
+            $file_to_store = 'food_images' . '_' . time().$file_name;
             $request->file('image')->storeAs('public/' . 'food_images', $file_to_store);
             $path ='food_images/'.$file_to_store;
 
@@ -96,7 +96,7 @@ class FoodController extends Controller
                 Storage::disk('public')->delete($food->image);
 
                 $file_name = $image->getClientOriginalName();
-                $file_to_store = 'food_images' . '_' . time() . '.' . $file_name;
+                $file_to_store = 'food_images' . '_' . time().$file_name;
                 $image->storeAs('public/' . 'food_images', $file_to_store);
                 $path ='food_images/'.$file_to_store;
 

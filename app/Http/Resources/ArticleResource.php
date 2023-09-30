@@ -14,6 +14,7 @@ class ArticleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
 
             'id' => $this->id,
@@ -39,6 +40,7 @@ class ArticleResource extends JsonResource
             'videos'     =>  ArticleVideoResource::collection($this->videos),
             'tags' =>  TagResource::collection($this->tags),
             'images' =>  ImageResource::collection($this->images),
+
         ];
     }
 }

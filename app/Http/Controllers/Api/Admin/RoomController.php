@@ -81,7 +81,7 @@ class RoomController extends Controller
             foreach ($request->file('images') as $image) {
 
                 $file_name = $image->getClientOriginalName();
-                $file_to_store = 'room_image' . '_' . time() . '.' . $file_name;
+                $file_to_store = 'room_image' . '_' . time().$file_name;
                 $image->storeAs('public/' . 'room_images', $file_to_store);
                 $path ='room_images/'.$file_to_store;
 
@@ -111,7 +111,7 @@ class RoomController extends Controller
 
                 Storage::disk('public')->delete($room->image);
                 $file_name = $image->getClientOriginalName();
-                $file_to_store = 'room_image' . '_' . time() . '.' . $file_name;
+                $file_to_store = 'room_image' . '_' . time().$file_name;
                 $image->storeAs('public/' . 'room_images', $file_to_store);
                 $path ='room_images/'.$file_to_store;
 

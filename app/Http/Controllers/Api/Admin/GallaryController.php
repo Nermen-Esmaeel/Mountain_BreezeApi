@@ -12,6 +12,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class GallaryController extends Controller
 {
     public function index(Request $request)
@@ -48,7 +49,7 @@ class GallaryController extends Controller
             foreach ($request->file('images') as $image) {
 
                    $file_name = $image->getClientOriginalName();
-                    $file_to_store = 'gallery_images' . '_' . time() . '.' . $file_name;
+                    $file_to_store = 'gallery_images' . '_' . time().$file_name;
                     $image->storeAs('public/' . 'gallery_images', $file_to_store);
                     $path ='gallery_images/'.$file_to_store;
 

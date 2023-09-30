@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Models\{Article, Image, Tag};
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\CategoryResource;
 use App\Traits\{UploadFile, ApiResponseTrait};
-use App\Http\Resources\{ArticleResource,ArticleVideoResource};
 use App\Http\Requests\Article\{StoreArticle, UpdateArticle};
+use App\Http\Resources\{ArticleResource,ArticleVideoResource};
 
 
 class ArticleController extends Controller
@@ -28,7 +29,9 @@ class ArticleController extends Controller
         if ($request->date) {
             $articles->where('date', $request->date);
         }
-        return $this->apiResponse(ArticleResource::collection($articles), '', 200);
+       return $this->apiResponse(ArticleResource::collection($articles), '', 200);
+
+
     }
 
     //show one article
@@ -55,7 +58,7 @@ class ArticleController extends Controller
         if ($request->hasFile('article_cover')) {
 
             $file_name = $request->file('article_cover')->getClientOriginalName();
-            $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
+            $file_to_store = 'article_images' . '_' . time().$file_name;
             $request->file('article_cover')->storeAs('public/' . 'article_images', $file_to_store);
             $path ='article_images/'.$file_to_store;
         }
@@ -80,7 +83,7 @@ class ArticleController extends Controller
             foreach ($request->file('images') as $image) {
 
                 $file_name = $image->getClientOriginalName();
-                $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
+                $file_to_store = 'article_images' . '_' . time().$file_name;
                 $image->storeAs('public/' . 'article_images', $file_to_store);
                 $path ='article_images/'.$file_to_store;
 
@@ -131,7 +134,7 @@ class ArticleController extends Controller
 
                 Storage::disk('public')->delete($article->article_cover);
                 $file_name = $request->file('article_cover')->getClientOriginalName();
-                $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
+                $file_to_store = 'article_images' . '_' . time().$file_name;
                 $request->file('article_cover')->storeAs('public/' . 'article_images', $file_to_store);
                 $path ='article_images/'.$file_to_store;
 
@@ -145,7 +148,7 @@ class ArticleController extends Controller
                 foreach ($request->file('images') as $image) {
 
                     $file_name = $image->getClientOriginalName();
-                    $file_to_store = 'article_images' . '_' . time() . '.' . $file_name;
+                    $file_to_store = 'article_images' . '_' . time(). $file_name;
                     $image->storeAs('public/' . 'article_images', $file_to_store);
                     $path ='article_images/'.$file_to_store;
 
