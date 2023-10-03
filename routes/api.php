@@ -105,7 +105,7 @@ Route::prefix('dashboard')->middleware('auth:api')->group(function () {
     Route::post('rooms', [RoomController::class, 'store']);
     Route::put('rooms/{room}', [RoomController::class, 'update']);
     Route::get('rooms/{room}', [RoomController::class, 'show'])->withoutMiddleware(['auth:api']);;
-    Route::delete('rooms/{room}', [RoomController::class, 'destroy']);
+    Route::delete('rooms/{id}', [RoomController::class, 'destroy']);
     //soft delete
     Route::get('rooms/softDelete/{id}', [RoomController::class, 'SoftDelete']);
     //show trash

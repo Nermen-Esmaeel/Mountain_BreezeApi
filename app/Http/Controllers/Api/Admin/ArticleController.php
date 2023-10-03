@@ -11,7 +11,7 @@ use App\Http\Resources\CategoryResource;
 use App\Traits\{UploadFile, ApiResponseTrait};
 use App\Http\Requests\Article\{StoreArticle, UpdateArticle};
 use App\Http\Resources\{ArticleResource,ArticleVideoResource};
-
+use Validator;
 
 class ArticleController extends Controller
 {
@@ -21,15 +21,27 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
 
+        $rules = [
+            'category' => 'in:Resort Events,Sport Events,Activity,Nature,Chalet,Restaurant,Pool',
+            'date'     => 'date'
+        ];
 
-        $articles = Article::query()->orderBy('id', 'Desc')->paginate(6);
+        $validator = Validator::make($request->query(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->all(),
+            ], 422);
+        }
+        $articles = Article::query();
+
         if ($request->category) {
-            $articles->where('category', $request->category);
+            $articles = $articles->where('category', 'LIKE', '%' . $request->category . '%');
         }
         if ($request->date) {
             $articles->where('date', $request->date);
         }
-       return $this->apiResponse(ArticleResource::collection($articles), '', 200);
+        return $this->apiResponse(ArticleResource::collection($articles->orderBy('id', 'Desc')->paginate(9)), '', 200);
 
 
     }
