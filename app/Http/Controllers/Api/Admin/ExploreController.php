@@ -18,7 +18,7 @@ class ExploreController extends Controller
     public function index(Request $request)
     {
         $rules = [
-            'category' => 'in:Events,Nature,Activity,Chalet,Restaurant,Pool',
+            'category' => 'in:Resort Events,Sport Events,Nature,Activity,Chalet,Restaurant,Pool',
         ];
 
         $validator = Validator::make($request->query(), $rules);

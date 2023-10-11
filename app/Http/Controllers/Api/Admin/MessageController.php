@@ -67,6 +67,7 @@ class MessageController extends Controller
     //delete an message
     public function deleteAll(Request $request)
     {
+
         $ids =  $request->ids;
 
 
