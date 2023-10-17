@@ -28,7 +28,8 @@ class BookController extends Controller
             $bookings->where('guests_number','=', $request->guests_number);
         }
         if($request->date){
-            $bookings->whereDate('created_at', $request->date);
+          $bookings->whereDate('created_at', $request->date);
+
         }
          return $this->apiResponse(BookResource::collection($bookings->get()), '', 200);
      }

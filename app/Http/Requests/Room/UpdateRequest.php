@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
             'price' => 'numeric',
             'content_en' => 'string',
             'content_ar' => 'string',
-            'images.*' => 'image',
+            'images.*' => 'image|file',
             'room_services' => 'boolean',
             'bed' => 'boolean',
             'floor' => 'integer|min:1',

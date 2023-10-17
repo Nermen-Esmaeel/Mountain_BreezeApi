@@ -81,9 +81,9 @@ class RoomController extends Controller
             foreach ($request->file('images') as $image) {
 
                 $file_name = $image->getClientOriginalName();
-                $file_to_store = 'room_image' . '_' . time().$file_name;
+                $file_to_store = 'room_image' . '_' . time() . $file_name;
                 $image->storeAs('public/' . 'room_images', $file_to_store);
-                $path ='room_images/'.$file_to_store;
+                $path = 'room_images/' . $file_to_store;
 
                 $room->images()->create([
                     'image_path' => $path,
@@ -106,18 +106,18 @@ class RoomController extends Controller
         $data = $request->validated();
 
 
-        if ($request->images) {
-            foreach ($request->images as $image) {
+        if ($request->hasFile('images')) {
 
-                Storage::disk('public')->delete($room->image);
+            $imagePaths = [];
+            foreach ($request->file('images') as $image) {
                 $file_name = $image->getClientOriginalName();
-                $file_to_store = 'room_image' . '_' . time().$file_name;
+                $file_to_store = 'room_image' . '_' . time() . $file_name;
                 $image->storeAs('public/' . 'room_images', $file_to_store);
-                $path ='room_images/'.$file_to_store;
-
-                $room->images()->update([
-                    'image_path' => $path
-                ]);
+                $imagePaths[] = 'room_images/' . $file_to_store;
+            }
+            $room->images()->delete();
+            foreach ($imagePaths as $path) {
+                $room->images()->create(['image_path' => $path]);
             }
         }
 

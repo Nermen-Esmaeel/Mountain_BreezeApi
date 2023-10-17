@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
             'content_en' => 'nullable|string',
             'content_ar' => 'nullable|string',
             'date'     => 'nullable|date',
-            'images.*' => 'image',
+            'images.*' => 'image|file',
 
         ];
     }

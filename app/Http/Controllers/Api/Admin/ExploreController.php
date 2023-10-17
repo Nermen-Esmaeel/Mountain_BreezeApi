@@ -34,7 +34,7 @@ class ExploreController extends Controller
         if ($request->category) {
             $exploreQuery = $exploreQuery->where('category', 'LIKE', '%' . $request->category . '%');
         }
-        return ExploreResource::collection($exploreQuery->get());
+        return ExploreResource::collection($exploreQuery->orderBy('id', 'Desc')->paginate(9))->response()->getData(true);
     }
 
 
@@ -116,15 +116,27 @@ class ExploreController extends Controller
 
         if ($request->hasFile('article_cover') && $request->file('article_cover')->isValid()) {
 
-            Storage::disk('public')->delete($explore->image);
-            $file_name = $request->file('explore_images')->getClientOriginalName();
-            $file_to_store = 'explore_images' . '_' . time() .$file_name;
+
+            Storage::disk('public')->delete($explore->article_cover);
+            $file_name = $request->file('article_cover')->getClientOriginalName();
+            $file_to_store = 'explore_images' . '_' . time().$file_name;
             $request->file('article_cover')->storeAs('public/' . 'explore_images', $file_to_store);
             $path ='explore_images/'.$file_to_store;
-            $data['article_cover'] = $path;
+             $data['article_cover'] = $path;
         }
 
-
+        //update tag for article
+        if ($tag_name = $request->tags) {
+            //#1 delete all tags
+            foreach ($explore->tags as $tag) {
+                $explore->tags()->detach($tag->id);
+            }
+            //#2 attach new tags
+            foreach ($tag_name as $tag) {
+                $tag_id = Tag::where('name', $tag)->get('id');
+                $explore->tags()->attach($tag_id);
+            }
+        }
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -148,6 +160,7 @@ class ExploreController extends Controller
             }
         }
         $explore->update($data);
+        $explore = Explore::find($explore->id);
         return new ExploreResource($explore);
     }
 

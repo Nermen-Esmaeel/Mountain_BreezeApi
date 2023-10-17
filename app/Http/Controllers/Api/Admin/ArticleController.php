@@ -41,7 +41,7 @@ class ArticleController extends Controller
         if ($request->date) {
             $articles->where('date', $request->date);
         }
-        return $this->apiResponse(ArticleResource::collection($articles->orderBy('id', 'Desc')->paginate(9)), '', 200);
+        return $this->apiResponse(ArticleResource::collection($articles->orderBy('id', 'Desc')->paginate(9))->response()->getData(true), '', 200);
 
 
     }
@@ -130,8 +130,8 @@ class ArticleController extends Controller
     {
 
         $input = $request->input();
-        $article = Article::find($id);
 
+        $article = Article::find($id);
         if ($article) {
 
                 if ($videos = $request->videos) {
@@ -141,7 +141,10 @@ class ArticleController extends Controller
                         ]);
                     }
                 }
+
+
             $article->update($input);
+            //update cover image
             if ($request->article_cover) {
 
                 Storage::disk('public')->delete($article->article_cover);
@@ -155,6 +158,18 @@ class ArticleController extends Controller
                     ]);
             }
 
+         //update tag for article
+            if ($tag_name = $request->tags) {
+                //#1 delete all tags
+                foreach ($article->tags as $tag) {
+                    $article->tags()->detach($tag->id);
+                }
+                //#2 attach new tags
+                foreach ($tag_name as $tag) {
+                    $tag_id = Tag::where('name', $tag)->get('id');
+                    $article->tags()->attach($tag_id);
+                }
+            }
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
@@ -169,7 +184,7 @@ class ArticleController extends Controller
                     ]);
                 }
             }
-
+            $article = Article::find($article->id);
             return $this->apiResponse(new ArticleResource($article), 'the article updated successfully ', 201);
         }
         return $this->apiResponse(null, 'the article not found', 404);

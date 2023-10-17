@@ -69,13 +69,9 @@ class MessageController extends Controller
     {
 
         $ids =  $request->ids;
-
-
         if ($ids) {
             Message::whereIn('id' ,$ids)->delete();
             return $this->apiResponse(null, 'the mssages deleted successfully', 200);
         }
-
-        return $this->apiResponse(null, 'the mssages not found', 404);
     }
 }

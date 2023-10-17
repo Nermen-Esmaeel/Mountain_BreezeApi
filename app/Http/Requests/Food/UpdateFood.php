@@ -25,7 +25,7 @@ class UpdateFood extends FormRequest
     {
             return [
 
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|file',
             'category' => 'nullable|in:Westren Food,Oriental Food,Traditional Food',
             'title_en' => 'nullable|string',
             'title_ar' => 'nullable|string',
